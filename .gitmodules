@@ -1,0 +1,3 @@
+[submodule "MiosGE/vendor/spdlog"]
+	path = MiosGE/vendor/spdlog
+	url = https://github.com/gabime/spdlog.git
