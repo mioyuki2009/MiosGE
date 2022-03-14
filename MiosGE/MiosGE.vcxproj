@@ -19,6 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Events\ApplicationEvent.h" />
+    <ClInclude Include="Src\Events\Event.h" />
+    <ClInclude Include="Src\Events\KeyEvent.h" />
+    <ClInclude Include="Src\Events\MouseEvent.h" />
     <ClInclude Include="Src\MiosGE\Log.h" />
     <ClInclude Include="Src\MioGE.h" />
     <ClInclude Include="Src\MiosGE\Application.h" />
@@ -129,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;MIOS_WIN64;MIOS_BUILDDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;$(SolutionDir)MiosGE\Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,7 +143,8 @@
       <Command>xcopy $(TargetPath) $(OutputPath)..\MiosDemo /y
 xcopy $(ProjectDir)Src\*.h $(SolutionDir)Bin\Include\ /y
 xcopy $(ProjectDir)Src\*.h $(SolutionDir)Bin\Include\ /y
-xcopy $(ProjectDir)Src\MiosGE\*.h $(SolutionDir)Bin\Include\MiosGE\ /y</Command>
+xcopy $(ProjectDir)Src\MiosGE\*.h $(SolutionDir)Bin\Include\MiosGE\ /y
+xcopy $(ProjectDir)Src\Events\*.h $(SolutionDir)Bin\Include\MiosGE\Events\ /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
