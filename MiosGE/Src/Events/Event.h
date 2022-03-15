@@ -1,8 +1,6 @@
 #pragma once
 
 #include "../MiosGE/Core.h"
-#include <string>
-#include <functional>
 
 namespace miosGE {
 	enum class EventType

@@ -1,3 +1,4 @@
+#include "MiosPch.h"
 #include "Application.h"
 #include "Events/ApplicationEvent.h"
 #include "MiosGE/Log.h"

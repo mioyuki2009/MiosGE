@@ -1,4 +1,4 @@
-#include "MioGE.h"
+#include "MiosGE/MioGE.h"
 class SandBox : public miosGE::Application {
 public:
 	SandBox() {};

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Event.h"
-#include <sstream>
 
 namespace miosGE {
 	class MIOS_API WindowResizeEvent : public Event {

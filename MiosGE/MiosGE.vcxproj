@@ -24,14 +24,18 @@
     <ClInclude Include="Src\Events\KeyEvent.h" />
     <ClInclude Include="Src\Events\MouseEvent.h" />
     <ClInclude Include="Src\MiosGE\Log.h" />
-    <ClInclude Include="Src\MioGE.h" />
+    <ClInclude Include="Src\MiosGE\MioGE.h" />
     <ClInclude Include="Src\MiosGE\Application.h" />
     <ClInclude Include="Src\MiosGE\Core.h" />
     <ClInclude Include="Src\MiosGE\EntryPoint.h" />
+    <ClInclude Include="Src\MiosGE\MiosPch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\MiosGE\Log.cpp" />
     <ClCompile Include="Src\MiosGE\Application.cpp" />
+    <ClCompile Include="Src\MiosGE\MiosPch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -134,6 +138,8 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;MIOS_WIN64;MIOS_BUILDDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;$(SolutionDir)MiosGE\Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>MiosPch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

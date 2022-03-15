@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace miosGE {
 	class MIOS_API KeyEvent : public Event {
 	public:
