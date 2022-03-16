@@ -1,10 +1,14 @@
 #include "MiosPch.h"
 #include "Application.h"
 #include "Events/ApplicationEvent.h"
-#include "MiosGE/Log.h"
+
+#include "GLFW/glfw3.h"
+
 namespace miosGE {
 	Application::Application() {
-	
+		m_Runing = true;
+
+		m_Window = std::unique_ptr<Window>(Window::Create());
 	}
 
 	Application::~Application() {
@@ -13,14 +17,12 @@ namespace miosGE {
 
 
 	void Application::Run() {
-		/*while (true)
-		{
 
-		}*/
-		WindowResizeEvent e(1280, 720);
-		MIOS_TRACE(e);
-
-		while (true);
+		while (m_Runing) {
+			glClearColor(1, 0, 1, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
+			m_Window->OnUpdate();
+		}
 	}
 
 }

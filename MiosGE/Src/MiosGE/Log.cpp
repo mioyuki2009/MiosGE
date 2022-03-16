@@ -14,6 +14,7 @@ namespace miosGE {
 		m_spCoreLogger->set_level(spdlog::level::trace);
 		m_spClientLogger = spdlog::stdout_color_mt("app");
 		m_spClientLogger->set_level(spdlog::level::trace);
+
 	}
 
 }

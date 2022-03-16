@@ -12,6 +12,9 @@
 #include <unordered_map>  
 #include <unordered_set>
 
+#include "Core.h"
+#include "Log.h"
+
 #ifdef MIOS_WIN64
 #include <windows.h>
 #endif

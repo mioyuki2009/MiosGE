@@ -2,7 +2,7 @@
 
 #include "MiosPch.h"
 
-#include "MiosGE/Application.h"
-#include "MiosGE/Log.h"
+#include "Application.h"
+#include "Log.h"
 
-#include "MiosGE/EntryPoint.h"
+#include "EntryPoint.h"

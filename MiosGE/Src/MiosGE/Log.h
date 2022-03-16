@@ -20,6 +20,7 @@ private:
 
 	static std::shared_ptr<spdlog::logger> m_spCoreLogger;
 	static std::shared_ptr<spdlog::logger> m_spClientLogger;
+
 };
 
 }
@@ -29,6 +30,7 @@ private:
 #define MIOS_CORE_WARN(...)		::miosGE::Log::GetCoreLogger()->warn(__VA_ARGS__)
 #define MIOS_CORE_ERROR(...)	::miosGE::Log::GetCoreLogger()->error(__VA_ARGS__)
 #define MIOS_CORE_Fatal(...)	::miosGE::Log::GetCoreLogger()->fatal(__VA_ARGS__)
+#define MIOS_CORE_A(...)	::miosGE::Log::GetCoreLogger()->fatal(__VA_ARGS__)
 
 #define MIOS_TRACE(...)			::miosGE::Log::GetClientLogger()->trace(__VA_ARGS__)
 #define MIOS_INFO(...)			::miosGE::Log::GetClientLogger()->info(__VA_ARGS__)

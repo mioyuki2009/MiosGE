@@ -19,37 +19,41 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Src\MiosGE\Events\ApplicationEvent.h" />
-    <ClInclude Include="Src\MiosGE\Events\Event.h" />
-    <ClInclude Include="Src\MiosGE\Events\KeyEvent.h" />
-    <ClInclude Include="Src\MiosGE\Events\MouseEvent.h" />
-    <ClInclude Include="Src\MiosGE\Log.h" />
-    <ClInclude Include="Src\MiosGE\MioGE.h" />
-    <ClInclude Include="Src\MiosGE\Application.h" />
-    <ClInclude Include="Src\MiosGE\Core.h" />
-    <ClInclude Include="Src\MiosGE\EntryPoint.h" />
-    <ClInclude Include="Src\MiosGE\MiosPch.h" />
-    <ClInclude Include="Src\MiosGE\Window.h" />
-    <ClInclude Include="Src\MiosGE\Platform\Windows\WindowsWindow.h" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\context.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\egl_context.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\init.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\input.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\monitor.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\null_init.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\null_joystick.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\null_monitor.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\null_window.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\osmesa_context.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\platform.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\vulkan.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\wgl_context.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\win32_init.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\win32_joystick.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\win32_module.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\win32_monitor.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\win32_thread.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\win32_time.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\win32_window.c" />
+    <ClCompile Include="..\MiosGE\vendor\GLFW\src\window.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Src\MiosGE\Log.cpp" />
-    <ClCompile Include="Src\MiosGE\Application.cpp" />
-    <ClCompile Include="Src\MiosGE\MiosPch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Src\MiosGE\Platform\Windows\WindowsWindow.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GLFW\GLFW.vcxproj">
-      <Project>{af095af0-fa78-4cf1-9938-91edd1465d88}</Project>
-    </ProjectReference>
+    <ClInclude Include="..\MiosGE\vendor\GLFW\src\null_joystick.h" />
+    <ClInclude Include="..\MiosGE\vendor\GLFW\src\null_platform.h" />
+    <ClInclude Include="..\MiosGE\vendor\GLFW\src\win32_joystick.h" />
+    <ClInclude Include="..\MiosGE\vendor\GLFW\src\win32_platform.h" />
+    <ClInclude Include="..\MiosGE\vendor\GLFW\src\win32_thread.h" />
+    <ClInclude Include="..\MiosGE\vendor\GLFW\src\win32_time.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{339268c4-c74f-4122-b7b4-3071ca4637c6}</ProjectGuid>
-    <RootNamespace>MiosGE</RootNamespace>
+    <ProjectGuid>{af095af0-fa78-4cf1-9938-91edd1465d88}</ProjectGuid>
+    <RootNamespace>GLFW</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -67,10 +71,10 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -143,24 +147,16 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;MIOS_WIN64;MIOS_BUILDDLL;MIOS_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_GLFW_WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;$(SolutionDir)MiosGE\Src;$(SolutionDir)MiosGE\vendor\GLFW\include;$(SolutionDir)MiosGE\Src\MiosGE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>MiosPch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\GLFW</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>GLFW.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Bin\Libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(TargetPath) $(OutputPath)..\MiosDemo /y
-xcopy $(ProjectDir)Src\*.h $(SolutionDir)Bin\Include\ /y
-xcopy $(ProjectDir)Src\*.h $(SolutionDir)Bin\Include\ /y
-xcopy $(ProjectDir)Src\MiosGE\*.h $(SolutionDir)Bin\Include\MiosGE\ /y
-xcopy $(ProjectDir)Src\MiosGE\Events\*.h $(SolutionDir)Bin\Include\MiosGE\Events\ /y</Command>
+      <Command>xcopy $(TargetPath) $(SolutionDir)Bin\Libs\ /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -171,7 +167,6 @@ xcopy $(ProjectDir)Src\MiosGE\Events\*.h $(SolutionDir)Bin\Include\MiosGE\Events
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

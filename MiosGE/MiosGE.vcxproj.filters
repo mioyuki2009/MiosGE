@@ -30,19 +30,25 @@
     <ClInclude Include="Src\MiosGE\Log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Events\Event.h">
+    <ClInclude Include="Src\MiosGE\Events\Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Events\KeyEvent.h">
+    <ClInclude Include="Src\MiosGE\Events\KeyEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Events\MouseEvent.h">
+    <ClInclude Include="Src\MiosGE\Events\MouseEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Events\ApplicationEvent.h">
+    <ClInclude Include="Src\MiosGE\Events\ApplicationEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Src\MiosGE\MiosPch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MiosGE\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MiosGE\Platform\Windows\WindowsWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -54,6 +60,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\MiosGE\MiosPch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MiosGE\Platform\Windows\WindowsWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
