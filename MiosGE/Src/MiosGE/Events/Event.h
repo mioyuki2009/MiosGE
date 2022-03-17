@@ -49,7 +49,7 @@ namespace miosGE {
 		using EventFn = std::function<bool(T&)>;
 	public:
 		EventDispatcher(Event& event)
-			: m_Event(m_Event) {}
+			: m_Event(event) {}
 		EventDispatcher(const Event&& event) = delete;
 
 		template<typename T>
