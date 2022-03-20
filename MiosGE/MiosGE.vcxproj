@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="Src\MiosGE\Input.h" />
     <ClInclude Include="Src\MiosGE\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="Src\MiosGE\KeyCodes.h" />
     <ClInclude Include="Src\MiosGE\Layer.h" />
     <ClInclude Include="Src\MiosGE\LayerStack.h" />
     <ClInclude Include="Src\MiosGE\Events\ApplicationEvent.h" />
@@ -33,6 +34,7 @@
     <ClInclude Include="Src\MiosGE\Core.h" />
     <ClInclude Include="Src\MiosGE\EntryPoint.h" />
     <ClInclude Include="Src\MiosGE\MiosPch.h" />
+    <ClInclude Include="Src\MiosGE\MouseButtonCodes.h" />
     <ClInclude Include="Src\MiosGE\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
     <ClInclude Include="Src\MiosGE\Platform\OpenGL\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="Src\MiosGE\Platform\Windows\WindowsInput.h" />

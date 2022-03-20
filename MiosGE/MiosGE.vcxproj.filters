@@ -72,6 +72,12 @@
     <ClInclude Include="Src\MiosGE\Platform\Windows\WindowsInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Src\MiosGE\KeyCodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MiosGE\MouseButtonCodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\MiosGE\Application.cpp">
