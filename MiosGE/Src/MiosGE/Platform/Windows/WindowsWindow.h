@@ -1,6 +1,7 @@
 #pragma once
 #include "Window.h"
-#include "GLFW/glfw3.h"
+
+struct GLFWwindow;
 
 namespace miosGE {
 
@@ -18,6 +19,8 @@ namespace miosGE {
         inline void SetEventCallback(const EventCallbackFn& callback) { m_Data.EventCallback = callback; }
         void SetVSync(bool enabled);
         bool IsVSync() const;
+
+        inline void* GetNativeWindow() const override { return m_Windows; }
 
     private:
         virtual void Init(const WindowsProps& props);

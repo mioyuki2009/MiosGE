@@ -9,6 +9,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MiosDemo", "MiosDemo\MiosDe
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLFW", "GLFW\GLFW.vcxproj", "{AF095AF0-FA78-4CF1-9938-91EDD1465D88}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLAD", "GLAD\GLAD.vcxproj", "{2B7E61B5-C6A2-4388-A4B7-BFD3A38C9ADC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "ImGui\ImGui.vcxproj", "{6BE205FB-D19C-4066-94A9-E7B44F9709BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -27,6 +31,14 @@ Global
 		{AF095AF0-FA78-4CF1-9938-91EDD1465D88}.Debug|x64.Build.0 = Debug|x64
 		{AF095AF0-FA78-4CF1-9938-91EDD1465D88}.Release|x64.ActiveCfg = Release|x64
 		{AF095AF0-FA78-4CF1-9938-91EDD1465D88}.Release|x64.Build.0 = Release|x64
+		{2B7E61B5-C6A2-4388-A4B7-BFD3A38C9ADC}.Debug|x64.ActiveCfg = Debug|x64
+		{2B7E61B5-C6A2-4388-A4B7-BFD3A38C9ADC}.Debug|x64.Build.0 = Debug|x64
+		{2B7E61B5-C6A2-4388-A4B7-BFD3A38C9ADC}.Release|x64.ActiveCfg = Release|x64
+		{2B7E61B5-C6A2-4388-A4B7-BFD3A38C9ADC}.Release|x64.Build.0 = Release|x64
+		{6BE205FB-D19C-4066-94A9-E7B44F9709BD}.Debug|x64.ActiveCfg = Debug|x64
+		{6BE205FB-D19C-4066-94A9-E7B44F9709BD}.Debug|x64.Build.0 = Debug|x64
+		{6BE205FB-D19C-4066-94A9-E7B44F9709BD}.Release|x64.ActiveCfg = Release|x64
+		{6BE205FB-D19C-4066-94A9-E7B44F9709BD}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

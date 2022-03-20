@@ -18,56 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Src\MiosGE\Input.h" />
-    <ClInclude Include="Src\MiosGE\ImGui\ImGuiLayer.h" />
-    <ClInclude Include="Src\MiosGE\Layer.h" />
-    <ClInclude Include="Src\MiosGE\LayerStack.h" />
-    <ClInclude Include="Src\MiosGE\Events\ApplicationEvent.h" />
-    <ClInclude Include="Src\MiosGE\Events\Event.h" />
-    <ClInclude Include="Src\MiosGE\Events\KeyEvent.h" />
-    <ClInclude Include="Src\MiosGE\Events\MouseEvent.h" />
-    <ClInclude Include="Src\MiosGE\Log.h" />
-    <ClInclude Include="Src\MiosGE\MioGE.h" />
-    <ClInclude Include="Src\MiosGE\Application.h" />
-    <ClInclude Include="Src\MiosGE\Core.h" />
-    <ClInclude Include="Src\MiosGE\EntryPoint.h" />
-    <ClInclude Include="Src\MiosGE\MiosPch.h" />
-    <ClInclude Include="Src\MiosGE\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
-    <ClInclude Include="Src\MiosGE\Platform\OpenGL\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="Src\MiosGE\Platform\Windows\WindowsInput.h" />
-    <ClInclude Include="Src\MiosGE\Window.h" />
-    <ClInclude Include="Src\MiosGE\Platform\Windows\WindowsWindow.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Src\MiosGE\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="Src\MiosGE\Layer.cpp" />
-    <ClCompile Include="Src\MiosGE\LayerStack.cpp" />
-    <ClCompile Include="Src\MiosGE\Log.cpp" />
-    <ClCompile Include="Src\MiosGE\Application.cpp" />
-    <ClCompile Include="Src\MiosGE\MiosPch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Src\MiosGE\Platform\OpenGL\ImGuiOpenGLRenderer.cpp" />
-    <ClCompile Include="Src\MiosGE\Platform\Windows\WindowsInput.cpp" />
-    <ClCompile Include="Src\MiosGE\Platform\Windows\WindowsWindow.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GLAD\GLAD.vcxproj">
-      <Project>{2b7e61b5-c6a2-4388-a4b7-bfd3a38c9adc}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\GLFW\GLFW.vcxproj">
-      <Project>{af095af0-fa78-4cf1-9938-91edd1465d88}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\ImGui\ImGui.vcxproj">
-      <Project>{6be205fb-d19c-4066-94a9-e7b44f9709bd}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{339268c4-c74f-4122-b7b4-3071ca4637c6}</ProjectGuid>
-    <RootNamespace>MiosGE</RootNamespace>
+    <ProjectGuid>{6be205fb-d19c-4066-94a9-e7b44f9709bd}</ProjectGuid>
+    <RootNamespace>ImGui</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -85,10 +40,10 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -161,26 +116,16 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;MIOS_WIN64;MIOS_BUILDDLL;MIOS_ENABLE_ASSERTS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;$(SolutionDir)MiosGE\Src;$(SolutionDir)MiosGE\vendor\GLFW\include;$(SolutionDir)MiosGE\Src\MiosGE;$(SolutionDir)MiosGE\vendor\GLAD\include;$(SolutionDir)MiosGE\vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>MiosPch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\imgui</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>GLFW.lib;GLAD.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Bin\Libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(TargetPath) $(OutputPath)..\MiosDemo /y
-xcopy $(ProjectDir)Src\*.h $(SolutionDir)Bin\Include\ /y
-xcopy $(ProjectDir)Src\*.h $(SolutionDir)Bin\Include\ /y
-xcopy $(ProjectDir)Src\MiosGE\*.h $(SolutionDir)Bin\Include\MiosGE\ /y
-xcopy $(ProjectDir)Src\MiosGE\Events\*.h $(SolutionDir)Bin\Include\MiosGE\Events\ /y
-xcopy $(ProjectDir)Src\MiosGE\ImGui\*.h $(SolutionDir)Bin\Include\MiosGE\ImGui\ /y</Command>
+      <Command>xcopy $(TargetPath) $(SolutionDir)Bin\Libs\ /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -191,7 +136,6 @@ xcopy $(ProjectDir)Src\MiosGE\ImGui\*.h $(SolutionDir)Bin\Include\MiosGE\ImGui\ 
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -200,6 +144,21 @@ xcopy $(ProjectDir)Src\MiosGE\ImGui\*.h $(SolutionDir)Bin\Include\MiosGE\ImGui\ 
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\MiosGE\vendor\imgui\imconfig.h" />
+    <ClInclude Include="..\MiosGE\vendor\imgui\imgui.h" />
+    <ClInclude Include="..\MiosGE\vendor\imgui\imgui_internal.h" />
+    <ClInclude Include="..\MiosGE\vendor\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\MiosGE\vendor\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\MiosGE\vendor\imgui\imstb_truetype.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\MiosGE\vendor\imgui\imgui.cpp" />
+    <ClCompile Include="..\MiosGE\vendor\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\MiosGE\vendor\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\MiosGE\vendor\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\MiosGE\vendor\imgui\imgui_widgets.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

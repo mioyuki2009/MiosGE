@@ -1,14 +1,20 @@
 #include "MiosPch.h"
 #include "Application.h"
 
-
-#include "GLFW/glfw3.h"
-
+#include "Log.h"
+#include "glad/glad.h"
+#include "Input.h"
 namespace miosGE {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
+	Application* Application::s_Instance = nullptr;
+
 	Application::Application() {
+		MIOS_CORE_ASSERT(!s_Instance, "Application aleady exists!");
+
+		s_Instance = this;
+
 		m_Runing = true;
 
 		m_Window = std::unique_ptr<Window>(Window::Create());
@@ -20,10 +26,26 @@ namespace miosGE {
 
 	}
 
+	void Application::PushLayer(Layer* layer) {
+		m_LayerStack.PushLayer(layer);
+		layer->OnAttach(); 
+	}
+	
+	void Application::PushOverlay(Layer* layer) {
+		m_LayerStack.PushOverlay(layer);
+	}
+
 	void Application::OnEvent(Event& e) {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		MIOS_CORE_INFO("{0}", e);
+
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) {
+			(*--it)->OnEvent(e);
+			if (e.m_Handled)
+				break;
+		}
+
 	}
 	
 	void Application::Run() {
@@ -31,6 +53,13 @@ namespace miosGE {
 		while (m_Runing) {
 			glClearColor(1, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
+			
+			for (const auto& layer : m_LayerStack)
+				layer->OnUpdate();
+			
+			auto [x, y] = Input::GetMousePosition();
+			MIOS_CORE_TRACE("{0}, {1}", x, y);
+
 			m_Window->OnUpdate();
 		}
 	}

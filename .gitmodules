@@ -4,3 +4,6 @@
 [submodule "MiosGE/vendor/GLFW"]
 	path = MiosGE/vendor/GLFW
 	url = https://github.com/glfw/glfw
+[submodule "MiosGE/vendor/imgui"]
+	path = MiosGE/vendor/imgui
+	url = https://github.com/ocornut/imgui

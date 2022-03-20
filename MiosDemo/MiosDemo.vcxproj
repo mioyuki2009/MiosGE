@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;MIOS_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;$(SolutionDir)Bin\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;$(SolutionDir)Bin\Include;D:\MiosGE\Bin\Include\MiosGE</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>MiosPch.h</PrecompiledHeaderFile>
     </ClCompile>

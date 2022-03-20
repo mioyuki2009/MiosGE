@@ -7,18 +7,20 @@ namespace miosGE {
 	public:
 		
 		inline unsigned int GetKeyCode() const { return m_iKeyCode; }
+		inline unsigned int GetMode() const { return m_iMode; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 	protected:
-		KeyEvent(int keycode)
-			:m_iKeyCode(keycode) {}
+		KeyEvent(int keycode, int mode)
+			:m_iKeyCode(keycode), m_iMode(mode){}
 		int m_iKeyCode;
+		int m_iMode;
 	};
 
 	class MIOS_API KeyPressedEvent : public KeyEvent {
 	public:
-		KeyPressedEvent(int keycode, int repeatCount)
-			: KeyEvent(keycode), m_iRepeatCount(repeatCount) {}
+		KeyPressedEvent(int keycode, int mode, int repeatCount)
+			: KeyEvent(keycode, mode), m_iRepeatCount(repeatCount) {}
 
 		inline unsigned int GetRepeatCount() const { return m_iRepeatCount; }
 		std::string ToString() const override {
@@ -36,8 +38,8 @@ namespace miosGE {
 	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
-		KeyReleasedEvent(const int keycode)
-			: KeyEvent(keycode) {}
+		KeyReleasedEvent(const int keycode, int mode)
+			: KeyEvent(keycode, mode) {}
 
 		std::string ToString() const override
 		{
@@ -52,8 +54,8 @@ namespace miosGE {
 	class KeyTypedEvent : public KeyEvent
 	{
 	public:
-		KeyTypedEvent(const int keycode)
-			: KeyEvent(keycode) {}
+		KeyTypedEvent(const int keycode, int mode)
+			: KeyEvent(keycode, mode) {}
 
 		std::string ToString() const override
 		{

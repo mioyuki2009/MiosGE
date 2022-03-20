@@ -4,6 +4,9 @@
 #include "Events/MouseEvent.h"
 #include "Events/KeyEvent.h"
 
+#include "Glad/glad.h"
+#include "GLFW/glfw3.h"
+
 namespace miosGE {
    
 	static bool s_GLFWInitalized = false;
@@ -38,6 +41,9 @@ namespace miosGE {
         }
         m_Windows = glfwCreateWindow((int)props.Width, (int)props.Height, props.Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(m_Windows);
+        int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+        MIOS_CORE_ASSERT(status, "Failed to initialize Glad");
+
         glfwSetWindowUserPointer(m_Windows, &m_Data);
 
         SetVSync(true);
@@ -64,29 +70,33 @@ namespace miosGE {
             {
             case GLFW_PRESS:
             {
-                KeyPressedEvent event(key, 0);
+                KeyPressedEvent event(key, mods, 0);
                 data.EventCallback(event);
             }
                 break;
             case GLFW_RELEASE:
             {
-                KeyReleasedEvent event(key);
+                KeyReleasedEvent event(key, mods);
                 data.EventCallback(event);
             }
                 break;
             case GLFW_REPEAT:
             {
-                KeyPressedEvent event(key, 1);
+                KeyPressedEvent event(key, mods, 1);
                 data.EventCallback(event);
             }
                 break;
             default:
                 break;
             }
-            
-            WindowCloseEvent event;
+            });
+
+        glfwSetCharCallback(m_Windows, [](GLFWwindow* window, unsigned int codepoint) {
+            WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+            KeyTypedEvent event(codepoint, 0);
             data.EventCallback(event);
             });
+
 
         glfwSetMouseButtonCallback(m_Windows, [](GLFWwindow* window, int button, int action, int mods) {
             WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
