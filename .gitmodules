@@ -7,3 +7,6 @@
 [submodule "MiosGE/vendor/imgui"]
 	path = MiosGE/vendor/imgui
 	url = https://github.com/ocornut/imgui
+[submodule "MiosGE/vendor/glm"]
+	path = MiosGE/vendor/glm
+	url = https://github.com/g-truc/glm
