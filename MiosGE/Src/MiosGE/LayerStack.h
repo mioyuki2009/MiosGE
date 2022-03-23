@@ -20,7 +20,7 @@ namespace miosGE {
 
 	private:
 		std::vector<Layer*> m_Layers;
-		std::vector<Layer*>::iterator m_LayersInstert;
+		unsigned int m_LayersInstertIndex = 0;
 
 	};
 

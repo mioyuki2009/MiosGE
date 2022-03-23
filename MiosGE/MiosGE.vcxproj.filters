@@ -60,12 +60,6 @@
     <ClInclude Include="Src\MiosGE\ImGui\ImGuiLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\MiosGE\Platform\OpenGL\ImGuiOpenGLRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\MiosGE\Platform\OpenGL\imgui_impl_opengl3_loader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Src\MiosGE\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -936,6 +930,12 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Src\MiosGE\Renderer\GraphicsContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MiosGE\Platform\OpenGL\OpenGLContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\MiosGE\Application.cpp">
@@ -959,10 +959,13 @@
     <ClCompile Include="Src\MiosGE\ImGui\ImGuiLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\MiosGE\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
+    <ClCompile Include="Src\MiosGE\Platform\Windows\WindowsInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\MiosGE\Platform\Windows\WindowsInput.cpp">
+    <ClCompile Include="Src\MiosGE\ImGui\ImGuiBuild.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MiosGE\Platform\OpenGL\OpenGLContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

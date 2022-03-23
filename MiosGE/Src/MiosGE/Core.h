@@ -1,11 +1,15 @@
 #pragma once
 
 #ifdef MIOS_WIN64
+#if MIOS_DYNAMIC_LINK
 	#ifdef MIOS_BUILDDLL
 		#define MIOS_API __declspec(dllexport)
 	#else
 		#define MIOS_API __declspec(dllimport)
 	#endif
+#else
+#define MIOS_API
+#endif
 #else
 	#error only support windows
 #endif

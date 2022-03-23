@@ -3,10 +3,7 @@
 #include "Events/ApplicationEvent.h"
 #include "Events/MouseEvent.h"
 #include "Events/KeyEvent.h"
-
-#include "Glad/glad.h"
-#include "GLFW/glfw3.h"
-
+#include "Platform/OpenGL/OpenGLContext.h"
 namespace miosGE {
    
 	static bool s_GLFWInitalized = false;
@@ -31,6 +28,7 @@ namespace miosGE {
         m_Data.Height = props.Height;
         m_Data.Width = props.Width;
 
+        
         MIOS_CORE_INFO("Create window {0},{1},{2}", props.Title, props.Width, props.Height);
 
         if (!s_GLFWInitalized) {
@@ -40,9 +38,9 @@ namespace miosGE {
             s_GLFWInitalized = true;
         }
         m_Windows = glfwCreateWindow((int)props.Width, (int)props.Height, props.Title.c_str(), nullptr, nullptr);
-        glfwMakeContextCurrent(m_Windows);
-        int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        MIOS_CORE_ASSERT(status, "Failed to initialize Glad");
+        
+        m_Context = new OpenGLContext(m_Windows);
+        m_Context->Init();
 
         glfwSetWindowUserPointer(m_Windows, &m_Data);
 
@@ -139,7 +137,8 @@ namespace miosGE {
 
     void WindowsWindow::OnUpdate() {
         glfwPollEvents();
-        glfwSwapBuffers(m_Windows);
+        m_Context->SwapBuffers();
+
     }
 
     void WindowsWindow::SetVSync(bool enabled) {

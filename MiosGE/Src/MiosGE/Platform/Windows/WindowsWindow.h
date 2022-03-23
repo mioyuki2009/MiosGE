@@ -1,6 +1,7 @@
 #pragma once
 #include "Window.h"
-
+#include "GLFW/glfw3.h"
+#include "Renderer/GraphicsContext.h"
 struct GLFWwindow;
 
 namespace miosGE {
@@ -28,7 +29,7 @@ namespace miosGE {
 
     private:
         GLFWwindow* m_Windows;
-
+        GraphicsContext* m_Context;
         struct WindowData
         {
             std::string Title;

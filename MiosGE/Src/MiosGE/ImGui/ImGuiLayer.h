@@ -10,24 +10,14 @@ namespace miosGE {
 		ImGuiLayer();
 		~ImGuiLayer();
 
-		void OnAttach();
-		void OnDetach();
-		void OnUpdate();
-		void OnEvent(Event& event);
+		virtual void OnAttach() override;
+		virtual void OnDetach() override;
+		virtual void OnImGuiRender() override;
+		
 
-
-		static int ImGui_ImplGlfw_KeyToImGuiKey(int key);
-		static void ImGui_ImplGlfw_UpdateKeyModifiers(int mode);
+		void Begin();
+		void End(); 
 	private:
-
-		bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& e);
-		bool OnMouseButtonReleaseEvent(MouseButtonReleasedEvent& e);
-		bool OnMouseMoveEvent(MouseMovedEvent& e);
-		bool OnMouseScrolledEvent(MouseScrolledEvent& e);
-		bool OnKeyPressedEvent(KeyPressedEvent& e);
-		bool OnKeyReleasedEvent(KeyReleasedEvent& e);
-		bool OnKeyTypedEvent(KeyTypedEvent& e);
-		bool OnWindowResizeEvent(WindowResizeEvent& e);
 
 	private:
 		float m_Time = 0.0f;
