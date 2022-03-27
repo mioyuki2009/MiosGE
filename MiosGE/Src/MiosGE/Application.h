@@ -5,7 +5,9 @@
 #include "LayerStack.h"
 #include "Events/ApplicationEvent.h"
 #include "ImGui/ImGuiLayer.h"
+#include "Core/TimeStep.h"
 #include "Window.h"
+
 namespace miosGE {
 
 	class MIOS_API Application
@@ -30,8 +32,8 @@ namespace miosGE {
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Runing = true;
 		LayerStack m_LayerStack;
-
-		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+		
+		float m_LastFrameTime = 0.0f;
 
 	private:
 		static Application* s_Instance;

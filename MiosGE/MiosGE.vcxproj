@@ -19,6 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\MiosGE\Core\Timestep.h" />
+    <ClInclude Include="Src\MiosGE\Platform\OpenGL\OpenGLRendererAPI.h" />
+    <ClInclude Include="Src\MiosGE\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="Src\MiosGE\Renderer\RendererAPI.h" />
     <ClInclude Include="Src\MiosGE\Input.h" />
     <ClInclude Include="Src\MiosGE\ImGui\ImGuiLayer.h" />
     <ClInclude Include="Src\MiosGE\KeyCodes.h" />
@@ -35,9 +39,16 @@
     <ClInclude Include="Src\MiosGE\EntryPoint.h" />
     <ClInclude Include="Src\MiosGE\MiosPch.h" />
     <ClInclude Include="Src\MiosGE\MouseButtonCodes.h" />
+    <ClInclude Include="Src\MiosGE\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="Src\MiosGE\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="Src\MiosGE\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="Src\MiosGE\Platform\Windows\WindowsInput.h" />
+    <ClInclude Include="Src\MiosGE\Renderer\Buffer.h" />
     <ClInclude Include="Src\MiosGE\Renderer\GraphicsContext.h" />
+    <ClInclude Include="Src\MiosGE\Renderer\RenderCommand.h" />
+    <ClInclude Include="Src\MiosGE\Renderer\Renderer.h" />
+    <ClInclude Include="Src\MiosGE\Renderer\Shader.h" />
+    <ClInclude Include="Src\MiosGE\Renderer\VertexArray.h" />
     <ClInclude Include="Src\MiosGE\Window.h" />
     <ClInclude Include="Src\MiosGE\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
@@ -328,6 +339,10 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\MiosGE\Platform\OpenGL\OpenGLRendererAPI.cpp" />
+    <ClCompile Include="Src\MiosGE\Renderer\OrthographicCamera.cpp" />
+    <ClCompile Include="Src\MiosGE\Renderer\RenderCommand.cpp" />
+    <ClCompile Include="Src\MiosGE\Renderer\RendererAPI.cpp" />
     <ClCompile Include="Src\MiosGE\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="Src\MiosGE\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="Src\MiosGE\Layer.cpp" />
@@ -337,9 +352,15 @@
     <ClCompile Include="Src\MiosGE\MiosPch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Src\MiosGE\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="Src\MiosGE\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="Src\MiosGE\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="Src\MiosGE\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="Src\MiosGE\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="Src\MiosGE\Renderer\Buffer.cpp" />
+    <ClCompile Include="Src\MiosGE\Renderer\Renderer.cpp" />
+    <ClCompile Include="Src\MiosGE\Renderer\Shader.cpp" />
+    <ClCompile Include="Src\MiosGE\Renderer\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GLAD\GLAD.vcxproj">
@@ -609,8 +630,11 @@
 xcopy $(ProjectDir)Src\*.h $(SolutionDir)Bin\Include\ /y
 xcopy $(ProjectDir)Src\*.h $(SolutionDir)Bin\Include\ /y
 xcopy $(ProjectDir)Src\MiosGE\*.h $(SolutionDir)Bin\Include\MiosGE\ /y
+xcopy $(ProjectDir)Src\MiosGE\Renderer\*.h $(SolutionDir)Bin\Include\MiosGE\Renderer\ /y
 xcopy $(ProjectDir)Src\MiosGE\Events\*.h $(SolutionDir)Bin\Include\MiosGE\Events\ /y
-xcopy $(ProjectDir)Src\MiosGE\ImGui\*.h $(SolutionDir)Bin\Include\MiosGE\ImGui\ /y</Command>
+xcopy $(ProjectDir)Src\MiosGE\ImGui\*.h $(SolutionDir)Bin\Include\MiosGE\ImGui\ /y
+xcopy $(ProjectDir)Src\MiosGE\Platform\OpenGL\*.h $(SolutionDir)Bin\Include\MiosGE\Platform\OpenGL\ /y
+xcopy $(ProjectDir)Src\MiosGE\Core\*.h $(SolutionDir)Bin\Include\MiosGE\Core\ /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
