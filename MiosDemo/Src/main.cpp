@@ -3,6 +3,9 @@
 #include "MiosGE/MioGE.h"
 #include "imgui.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "Platform/OpenGL/OpenGLShader.h"
+#include "glm/gtc/type_ptr.hpp"
+
 
 class TestLayer : public miosGE::Layer {
 public:
@@ -76,9 +79,9 @@ public:
 			}	
 
 		)";
-		m_Shader.reset(new miosGE::Shader(vertexSrc, fragmentSrc));
+		m_Shader.reset(miosGE::Shader::Create(vertexSrc, fragmentSrc));
 
-		std::string BlueShaderVertexSrc2 = R"(
+		std::string flatColorShaderVertexSrc = R"(
 			#version 460 core
 			layout(location = 0) in vec3 a_Position;
 
@@ -92,18 +95,19 @@ public:
 			}	
 
 		)";
-		std::string BlueShaderFragmentSrc2 = R"(
+		std::string flatColorShaderFragmentSrc = R"(
 			#version 460 core
 			
 			out vec4 color;
 			in vec3 v_Position;
+			uniform vec3 u_Color;
 			void main(){
-				color = vec4(0.2,0.3,0.8,1.0);
+				color = vec4(u_Color, 1.0f);
 			}	
 
 		)";
 
-		m_BlueShader.reset(new miosGE::Shader(BlueShaderVertexSrc2, BlueShaderFragmentSrc2));
+		m_FlatColorShader.reset(miosGE::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
 	}
 
 	void OnUpdate(miosGE::Timestep ts) override {
@@ -144,11 +148,18 @@ public:
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
+		glm::vec4 redColor(0.8f, 0.2f, 0.3f, 1.0f);
+		glm::vec4 blueColor(0.2f, 0.3f, 0.8f, 1.0f);
+
+		std::dynamic_pointer_cast<miosGE::OpenGLShader>(m_FlatColorShader)->Bind();
+		std::dynamic_pointer_cast<miosGE::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat3("u_Color", m_SquareColor);
+
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 20; x++) {
 				glm::vec3 pos(x * 0.11f, y * 0.11 , 0.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-				miosGE::Renderer::Submit(m_BlueShader, m_SquareVA, transform);
+
+				miosGE::Renderer::Submit(m_FlatColorShader, m_SquareVA, transform);
 			}
 		}
 
@@ -159,8 +170,11 @@ public:
 	}
 
 	virtual void OnImGuiRender() override {
-		
+		ImGui::Begin("Setting");
+		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+		ImGui::End();
 	}
+	
 	void OnEvent(miosGE::Event& event) override {
 	}
 		
@@ -168,7 +182,7 @@ private:
 	std::shared_ptr<miosGE::Shader> m_Shader;
 	std::shared_ptr<miosGE::VertexArray> m_VertexArray;
 
-	std::shared_ptr<miosGE::Shader> m_BlueShader;
+	std::shared_ptr<miosGE::Shader> m_FlatColorShader;
 	std::shared_ptr<miosGE::VertexArray> m_SquareVA;
 
 	miosGE::OrthographicCamera m_Camera;
@@ -179,6 +193,8 @@ private:
 
 	glm::vec3 m_SquarePosition;
 	float m_SquareMoveSpeed = 5.0f;
+
+	glm::vec3 m_SquareColor = { 0.2f, 0.3f ,0.8f };
 };
 
 

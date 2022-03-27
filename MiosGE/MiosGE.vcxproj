@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="Src\MiosGE\Core\Timestep.h" />
     <ClInclude Include="Src\MiosGE\Platform\OpenGL\OpenGLRendererAPI.h" />
+    <ClInclude Include="Src\MiosGE\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="Src\MiosGE\Renderer\OrthographicCamera.h" />
     <ClInclude Include="Src\MiosGE\Renderer\RendererAPI.h" />
     <ClInclude Include="Src\MiosGE\Input.h" />
@@ -340,6 +341,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\MiosGE\Platform\OpenGL\OpenGLRendererAPI.cpp" />
+    <ClCompile Include="Src\MiosGE\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\RenderCommand.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\RendererAPI.cpp" />
