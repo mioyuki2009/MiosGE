@@ -1,23 +1,22 @@
 
-#include "string.h"
 #include "MiosGE/MioGE.h"
+#include "EntryPoint.h"
 #include "imgui.h"
-#include "glm/gtc/matrix_transform.hpp"
 #include "Platform/OpenGL/OpenGLShader.h"
 #include "glm/gtc/type_ptr.hpp"
-
+#include "Sandbox2D.h"
 
 class TestLayer : public miosGE::Layer {
 public:
-	TestLayer() :Layer("Test") ,m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f), m_SquarePosition(0.0f)
+	TestLayer() :Layer("Test") ,m_CameraController(1280.0f/720.0f)
 	{
-		m_VertexArray.reset(miosGE::VertexArray::Create());
+		m_VertexArray = miosGE::VertexArray::Create();
 		float vertices[3 * 7] = {
 			-0.5f, -0.5f, 0.0f , 0.8f, 0.2f, 0.8f, 1.0f,
 			 0.5f, -0.5f, 0.0f , 0.2f, 0.3f, 0.8f, 1.0f,
 			 0.0f,  0.5f, 0.0f , 0.8f, 0.8f, 0.2f, 1.0f,
 		};
-		std::shared_ptr<miosGE::VertexBuffer> vertexBuffer;
+		miosGE::Ref<miosGE::VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(miosGE::VertexBuffer::Create(vertices, sizeof(vertices)));
 		miosGE::BufferLayout layout = {
 			{miosGE::ShaderDataType::Float3, "a_Position"},
@@ -27,26 +26,27 @@ public:
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0,1,2 };
-		std::shared_ptr<miosGE::IndexBuffer> indexBuffer;
+		miosGE::Ref<miosGE::IndexBuffer> indexBuffer;
 		indexBuffer.reset(miosGE::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
-		m_SquareVA.reset(miosGE::VertexArray::Create());
-		float squareVertices[3 * 4] = {
-			-0.5f, -0.5f, 0.0f ,
-			 0.5f, -0.5f, 0.0f ,
-			 0.5f,  0.5f, 0.0f ,
-			-0.5f,  0.5f, 0.0f
+		m_SquareVA = miosGE::VertexArray::Create();
+		float squareVertices[5 * 4] = {
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
-		std::shared_ptr<miosGE::VertexBuffer> squareVB;
+		miosGE::Ref<miosGE::VertexBuffer> squareVB;
 		squareVB.reset(miosGE::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 		squareVB->SetLayout({
 			{miosGE::ShaderDataType::Float3, "a_Position"},
+			{miosGE::ShaderDataType::Float2, "a_Texcoord"},
 			});
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0,1,2,2,3,0 };
-		std::shared_ptr<miosGE::IndexBuffer> squareIB;
+		miosGE::Ref<miosGE::IndexBuffer> squareIB;
 		squareIB.reset(miosGE::IndexBuffer::Create(squareIndices, sizeof(squareIndices)));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
@@ -79,7 +79,10 @@ public:
 			}	
 
 		)";
-		m_Shader.reset(miosGE::Shader::Create(vertexSrc, fragmentSrc));
+
+		
+
+		m_Shader = miosGE::Shader::Create("VertexColorColor", vertexSrc, fragmentSrc);
 
 		std::string flatColorShaderVertexSrc = R"(
 			#version 460 core
@@ -107,44 +110,26 @@ public:
 
 		)";
 
-		m_FlatColorShader.reset(miosGE::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+		m_FlatColorShader = miosGE::Shader::Create("FlatColor", flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
+
+		m_TextureShader = miosGE::Shader::Create("assets/shaders/Texture.glsl");
+
+		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
+
+		m_Texture = miosGE::Texture2D::Create("assets/textures/Checkerboard.png");
+		m_ChernoLogTexture = miosGE::Texture2D::Create("assets/textures/ChernoLogo.png");
+
+		std::dynamic_pointer_cast<miosGE::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<miosGE::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
 	}
 
 	void OnUpdate(miosGE::Timestep ts) override {
-		if (miosGE::Input::IskeyPressed(MIOS_KEY_LEFT)) {
-			m_CameraPosition.x -= m_CameraSpeed * ts;
-		}
-		else if (miosGE::Input::IskeyPressed(MIOS_KEY_RIGHT)) {
-			m_CameraPosition.x += m_CameraSpeed * ts;
-		}
-		if (miosGE::Input::IskeyPressed(MIOS_KEY_DOWN)) {
-			m_CameraPosition.y -= m_CameraSpeed * ts;
-		}
-		else if (miosGE::Input::IskeyPressed(MIOS_KEY_UP)) {
-			m_CameraPosition.y += m_CameraSpeed * ts;
-		}
-
-		if (miosGE::Input::IskeyPressed(MIOS_KEY_J)) {
-			m_SquarePosition.x += m_SquareMoveSpeed * ts;
-		}
-		else if (miosGE::Input::IskeyPressed(MIOS_KEY_L)) {
-			m_SquarePosition.x -= m_SquareMoveSpeed * ts;
-		}
-
-		if (miosGE::Input::IskeyPressed(MIOS_KEY_I)) {
-			m_SquarePosition.y += m_SquareMoveSpeed * ts;
-		}
-		else if (miosGE::Input::IskeyPressed(MIOS_KEY_K)) {
-			m_SquarePosition.y -= m_SquareMoveSpeed * ts;
-		}
+		m_CameraController.OnUpdate(ts);
 
 		miosGE::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 		miosGE::RenderCommand::Clear();
 
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
-
-		miosGE::Renderer::BeginScene(m_Camera);
+		miosGE::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -162,8 +147,14 @@ public:
 				miosGE::Renderer::Submit(m_FlatColorShader, m_SquareVA, transform);
 			}
 		}
+		
+		m_Texture->Bind();
+		miosGE::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
-		miosGE::Renderer::Submit(m_Shader, m_VertexArray);
+		m_ChernoLogTexture->Bind();
+		miosGE::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		// Triangle
+		//miosGE::Renderer::Submit(m_Shader, m_VertexArray);
 
 		miosGE::Renderer::EndScene();
 
@@ -175,25 +166,23 @@ public:
 		ImGui::End();
 	}
 	
-	void OnEvent(miosGE::Event& event) override {
+	void OnEvent(miosGE::Event& e) override {
+		m_CameraController.OnEvent(e);
+
 	}
 		
 private:
-	std::shared_ptr<miosGE::Shader> m_Shader;
-	std::shared_ptr<miosGE::VertexArray> m_VertexArray;
+	miosGE::ShaderLibrary m_ShaderLibrary;
 
-	std::shared_ptr<miosGE::Shader> m_FlatColorShader;
-	std::shared_ptr<miosGE::VertexArray> m_SquareVA;
+	miosGE::Ref<miosGE::Shader> m_Shader;
+	miosGE::Ref<miosGE::VertexArray> m_VertexArray;
 
-	miosGE::OrthographicCamera m_Camera;
-	glm::vec3 m_CameraPosition;
-	float m_CameraSpeed = 5.0f;
-	float m_CameraRotation = 0.0f;
-	float m_CameraRotationSpeed = 180.0f;
+	miosGE::Ref<miosGE::Shader> m_FlatColorShader, m_TextureShader;
+	miosGE::Ref<miosGE::VertexArray> m_SquareVA;
 
-	glm::vec3 m_SquarePosition;
-	float m_SquareMoveSpeed = 5.0f;
+	miosGE::Ref<miosGE::Texture> m_Texture, m_ChernoLogTexture;
 
+	miosGE::OrthographicCameraController m_CameraController;
 	glm::vec3 m_SquareColor = { 0.2f, 0.3f ,0.8f };
 };
 
@@ -201,7 +190,8 @@ private:
 class SandBox : public miosGE::Application {
 public:
 	SandBox() {
-		PushLayer(new TestLayer());
+		//PushLayer(new TestLayer());
+		PushLayer(new Sandbox2D());
 	};
 	~SandBox() {};
 

@@ -8,14 +8,15 @@
 #include "Log.h"
 #include "ImGui/ImGuiLayer.h"
 #include "Input.h"
-#include "EntryPoint.h"
 #include "Events/Event.h"
 
 #include "Core/TimeStep.h"
 
+#include "Renderer/Texture.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/RenderCommand.h"
 #include "Renderer/Buffer.h"
 #include "Renderer/Shader.h"
 #include "Renderer/VertexArray.h"
 #include "Renderer/OrthographicCamera.h"
+#include "OrthographicCameraController.h"
