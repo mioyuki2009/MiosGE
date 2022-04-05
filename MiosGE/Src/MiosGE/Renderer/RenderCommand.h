@@ -1,7 +1,7 @@
 #pragma once
 
 #include "RendererAPI.h"
-
+#include "Debug/Instrumentor.h"
 namespace miosGE {
 
 	class RenderCommand {

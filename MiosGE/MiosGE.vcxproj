@@ -20,11 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\MiosGE\Core\Timestep.h" />
+    <ClInclude Include="Src\MiosGE\Debug\Instrumentor.h" />
     <ClInclude Include="Src\MiosGE\OrthographicCameraController.h" />
     <ClInclude Include="Src\MiosGE\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="Src\MiosGE\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="Src\MiosGE\Platform\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="Src\MiosGE\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="Src\MiosGE\Renderer\Renderer2D.h" />
     <ClInclude Include="Src\MiosGE\Renderer\RendererAPI.h" />
     <ClInclude Include="Src\MiosGE\Input.h" />
     <ClInclude Include="Src\MiosGE\ImGui\ImGuiLayer.h" />
@@ -350,6 +352,7 @@
     <ClCompile Include="Src\MiosGE\Platform\OpenGL\OpenGLTexture.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\RenderCommand.cpp" />
+    <ClCompile Include="Src\MiosGE\Renderer\Renderer2D.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\RendererAPI.cpp" />
     <ClCompile Include="Src\MiosGE\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="Src\MiosGE\ImGui\ImGuiLayer.cpp" />
@@ -636,7 +639,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)Bin\Libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(TargetPath) $(OutputPath)..\MiosDemo /y
+      <Command>xcopy $(TargetPath) $(OutputPath)..\MiosDemo\ /y 
 xcopy $(ProjectDir)Src\*.h $(SolutionDir)Bin\Include\ /y
 xcopy $(ProjectDir)Src\*.h $(SolutionDir)Bin\Include\ /y
 xcopy $(ProjectDir)Src\MiosGE\*.h $(SolutionDir)Bin\Include\MiosGE\ /y
@@ -644,7 +647,8 @@ xcopy $(ProjectDir)Src\MiosGE\Renderer\*.h $(SolutionDir)Bin\Include\MiosGE\Rend
 xcopy $(ProjectDir)Src\MiosGE\Events\*.h $(SolutionDir)Bin\Include\MiosGE\Events\ /y
 xcopy $(ProjectDir)Src\MiosGE\ImGui\*.h $(SolutionDir)Bin\Include\MiosGE\ImGui\ /y
 xcopy $(ProjectDir)Src\MiosGE\Platform\OpenGL\*.h $(SolutionDir)Bin\Include\MiosGE\Platform\OpenGL\ /y
-xcopy $(ProjectDir)Src\MiosGE\Core\*.h $(SolutionDir)Bin\Include\MiosGE\Core\ /y</Command>
+xcopy $(ProjectDir)Src\MiosGE\Core\*.h $(SolutionDir)Bin\Include\MiosGE\Core\ /y
+xcopy $(ProjectDir)Src\MiosGE\Debug\*.h $(SolutionDir)Bin\Include\MiosGE\Debug\ /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

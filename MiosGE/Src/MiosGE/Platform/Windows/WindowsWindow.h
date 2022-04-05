@@ -25,7 +25,7 @@ namespace miosGE {
 
     private:
         virtual void Init(const WindowsProps& props);
-        virtual void ShutDown();
+        virtual void Shutdown();
 
     private:
         GLFWwindow* m_Windows;

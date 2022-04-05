@@ -4,9 +4,10 @@
 #include "Events/MouseEvent.h"
 #include "Events/KeyEvent.h"
 #include "Platform/OpenGL/OpenGLContext.h"
+#include "Debug/Instrumentor.h"
 namespace miosGE {
    
-	static bool s_GLFWInitalized = false;
+    static uint8_t s_GLFWWindowCount = 0;
 
     static void GLFWErrorCallback(int error_code, const char* description) {
         MIOS_CORE_ERROR("GLFW Error ({0}): {1}", error_code, description);
@@ -18,12 +19,20 @@ namespace miosGE {
 	}
 
     WindowsWindow::WindowsWindow(const WindowsProps& props) {
+        MIOS_PROFILE_FUNCTION();
+        
         Init(props);
     }
 
-    WindowsWindow::~WindowsWindow() {}
+    WindowsWindow::~WindowsWindow() {
+        MIOS_PROFILE_FUNCTION();
+        
+        Shutdown();
+    }
 
     void WindowsWindow::Init(const WindowsProps& props) {
+        MIOS_PROFILE_FUNCTION();
+
         m_Data.Title = props.Title;
         m_Data.Height = props.Height;
         m_Data.Width = props.Width;
@@ -31,14 +40,19 @@ namespace miosGE {
         
         MIOS_CORE_INFO("Create window {0},{1},{2}", props.Title, props.Width, props.Height);
 
-        if (!s_GLFWInitalized) {
+        if (s_GLFWWindowCount == 0) {
+            MIOS_PROFILE_SCOPE("glfwInit");
             int success = glfwInit();
             MIOS_CORE_ASSERT(success, "Cound not intialize GLFW!");
             glfwSetErrorCallback(GLFWErrorCallback); 
-            s_GLFWInitalized = true;
         }
-        m_Windows = glfwCreateWindow((int)props.Width, (int)props.Height, props.Title.c_str(), nullptr, nullptr);
-        
+
+        {
+            MIOS_PROFILE_SCOPE("glfwCreateWindow");
+            m_Windows = glfwCreateWindow((int)props.Width, (int)props.Height, props.Title.c_str(), nullptr, nullptr);
+            ++s_GLFWWindowCount;
+        }
+
         m_Context = new OpenGLContext(m_Windows);
         m_Context->Init();
 
@@ -131,17 +145,28 @@ namespace miosGE {
             });
     }
 
-    void WindowsWindow::ShutDown() {
+    void WindowsWindow::Shutdown() {
+        MIOS_PROFILE_FUNCTION();
+
         glfwDestroyWindow(m_Windows);
+        --s_GLFWWindowCount;
+
+        if (s_GLFWWindowCount == 0)
+        {
+            glfwTerminate();
+        }
     }
 
     void WindowsWindow::OnUpdate() {
+        MIOS_PROFILE_FUNCTION();
+        
         glfwPollEvents();
         m_Context->SwapBuffers();
-
     }
 
     void WindowsWindow::SetVSync(bool enabled) {
+        MIOS_PROFILE_FUNCTION();
+
         if (enabled)
             glfwSwapInterval(1);
         else

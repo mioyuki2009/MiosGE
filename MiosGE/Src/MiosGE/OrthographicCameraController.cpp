@@ -3,7 +3,7 @@
 
 #include "Input.h"
 #include "KeyCodes.h"
-
+#include "Debug/Instrumentor.h"
 namespace miosGE {
 	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation)
 		:m_AspectRatio(aspectRatio), m_Camera(-aspectRatio * m_ZoomLevel, aspectRatio* m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
@@ -12,6 +12,8 @@ namespace miosGE {
 
 	void OrthographicCameraController::OnUpdate(Timestep ts)
 	{
+		MIOS_PROFILE_FUNCTION();
+
 		if (Input::IskeyPressed(MIOS_KEY_A)) {
 			m_CameraPosition.x -= m_CameraTranslationSpeed * ts;
 		}
@@ -40,6 +42,8 @@ namespace miosGE {
 
 	void OrthographicCameraController::OnEvent(Event& e)
 	{
+		MIOS_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(MIOS_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
 		dispatcher.Dispatch<WindowResizeEvent>(MIOS_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
@@ -47,6 +51,8 @@ namespace miosGE {
 	}
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
+		MIOS_PROFILE_FUNCTION();
+
 		m_ZoomLevel -= e.GetYOffset() * 0.25f;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
@@ -54,6 +60,8 @@ namespace miosGE {
 	}
 	bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& e)
 	{
+		MIOS_PROFILE_FUNCTION();
+
 		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;

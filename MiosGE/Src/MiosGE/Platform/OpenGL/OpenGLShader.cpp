@@ -3,7 +3,7 @@
 
 #include "glad/glad.h"
 #include "glm/gtc/type_ptr.hpp"
-
+#include "Debug/Instrumentor.h"
 #include <fstream>
 
 namespace miosGE {
@@ -20,6 +20,8 @@ namespace miosGE {
 	}
 
 	OpenGLShader::OpenGLShader(const std::string& filePath) {
+		MIOS_PROFILE_FUNCTION();
+
 		std::string source = ReadFile(filePath);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
@@ -35,6 +37,8 @@ namespace miosGE {
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc):
 		m_Name(name)
 	{
+		MIOS_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
 		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -43,6 +47,8 @@ namespace miosGE {
 	}
 
 	std::string OpenGLShader::ReadFile(const std::string& filePath) {
+		MIOS_PROFILE_FUNCTION();
+
 		std::string result;
 		std::ifstream in(filePath, std::ios::in | std::ios::binary);
 
@@ -61,6 +67,8 @@ namespace miosGE {
 	}
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source) {
+		MIOS_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 		const char* typeToken = "#type";
 		size_t typeTokenLength = strlen(typeToken);
@@ -85,6 +93,8 @@ namespace miosGE {
 	}
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources) {
+		MIOS_PROFILE_FUNCTION();
+
 		GLuint program = glCreateProgram();
 		MIOS_CORE_ASSERT(shaderSources.size() <= 2, "We only support 2 shaders for now");
 		std::array <GLenum, 2> glShaderIDs;
@@ -158,51 +168,129 @@ namespace miosGE {
 	}
 	
 	OpenGLShader::~OpenGLShader() {
+		MIOS_PROFILE_FUNCTION();
+
 		glDeleteProgram(m_RendererID);
 	}
 
 	void OpenGLShader::Bind() const
 	{
+		MIOS_PROFILE_FUNCTION();
+
 		glUseProgram(m_RendererID);
 	}
 
 	void OpenGLShader::Unbind() const
 	{
+		MIOS_PROFILE_FUNCTION();
+
 		glUseProgram(0);
+	}
+
+	void OpenGLShader::SetInt(const std::string& name, int value) {
+		MIOS_PROFILE_FUNCTION();
+
+		UploadUniformInt(name, value);
+	}
+
+	void OpenGLShader::SetFloat(const std::string& name, float value) {
+		MIOS_PROFILE_FUNCTION();
+
+		UploadUniformFloat(name, value);
+	};
+
+	void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& value) {
+		MIOS_PROFILE_FUNCTION();
+
+		UploadUniformFloat3(name, value);
+	}
+
+	void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& value) {
+		MIOS_PROFILE_FUNCTION();
+
+		UploadUniformFloat4(name, value);
+	}
+	
+	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& value) {
+		MIOS_PROFILE_FUNCTION();
+
+		UploadUniformMat4(name, value);
 	}
 	
 	void OpenGLShader::UploadUniformInt(const std::string& name, int value) {
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform1i(location, value);
+		if (m_ParamMap.find(name) == m_ParamMap.end()) {
+			GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+			m_ParamMap[name] = location;
+		}
+		GLint loc = m_ParamMap[name];
+
+		//GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform1i(loc, value);
 	}
 	
 	void OpenGLShader::UploadUniformFloat(const std::string& name, float value) {
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform1f(location, value);
+		if (m_ParamMap.find(name) == m_ParamMap.end()) {
+			GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+			m_ParamMap[name] = location;
+		}
+		GLint loc = m_ParamMap[name];
+
+		//GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform1f(loc, value);
 	}
 
 	void OpenGLShader::UploadUniformFloat2(const std::string& name, const glm::vec2& value) {
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform2f(location, value.x, value.y);
+		if (m_ParamMap.find(name) == m_ParamMap.end()) {
+			GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+			m_ParamMap[name] = location;
+		}
+		GLint loc = m_ParamMap[name];
+
+		//GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform2f(loc, value.x, value.y);
 	}
 
 	void OpenGLShader::UploadUniformFloat3(const std::string& name, const glm::vec3& value) {
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform3f(location, value.x, value.y, value.z);
+		if (m_ParamMap.find(name) == m_ParamMap.end()) {
+			GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+			m_ParamMap[name] = location;
+		}
+		GLint loc = m_ParamMap[name];
+
+		//GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform3f(loc, value.x, value.y, value.z);
 	}
 
 	void OpenGLShader::UploadUniformFloat4(const std::string& name, const glm::vec4& value) {
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform4f(location, value.x, value.y, value.z, value.w);
+		if (m_ParamMap.find(name) == m_ParamMap.end()) {
+			GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+			m_ParamMap[name] = location;
+		}
+		GLint loc = m_ParamMap[name];
+
+		//GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform4f(loc, value.x, value.y, value.z, value.w);
 	}
 
 	void OpenGLShader::UploadUniformMat3(const std::string& name, const glm::mat3& matrix) {
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+		if (m_ParamMap.find(name) == m_ParamMap.end()) {
+			GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+			m_ParamMap[name] = location;
+		}
+		GLint loc = m_ParamMap[name];
+
+		//GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniformMatrix3fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
 	void OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix) {
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+		if (m_ParamMap.find(name) == m_ParamMap.end()) {
+			GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+			m_ParamMap[name] = location;
+		}
+		GLint loc = m_ParamMap[name];
+
+		//GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 }

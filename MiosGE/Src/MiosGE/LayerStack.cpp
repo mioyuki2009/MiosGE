@@ -6,6 +6,7 @@ namespace miosGE {
 	}
 	LayerStack::~LayerStack() {
 		for (auto& layer : m_Layers) {
+			layer->OnDetach();
 			delete layer;
 		}
 	}
@@ -21,18 +22,18 @@ namespace miosGE {
 	void LayerStack::PopLayer(Layer* layer) {
 		assert(layer == m_Layers[0]);
 
-		const auto& it = std::find(m_Layers.begin(), m_Layers.end(), layer);
-		if (it != m_Layers.end()) {
+		const auto& it = std::find(m_Layers.begin(), m_Layers.begin() + m_LayersInstertIndex, layer);
+		if (it != m_Layers.begin() + m_LayersInstertIndex) {
+			layer->OnDetach();
 			m_Layers.erase(it);
 			m_LayersInstertIndex--;
 		}
 	}
 	
 	void LayerStack::PopOverlay(Layer* overlay) {
-		assert(overlay == m_Layers[m_Layers.size() - 1]);
-
-		const auto& it = std::find(m_Layers.begin(), m_Layers.end(), overlay);
+		const auto& it = std::find(m_Layers.begin() + m_LayersInstertIndex, m_Layers.end(), overlay);
 		if (it != m_Layers.end()) {
+			overlay->OnDetach();
 			m_Layers.erase(it);
 		}
 	}

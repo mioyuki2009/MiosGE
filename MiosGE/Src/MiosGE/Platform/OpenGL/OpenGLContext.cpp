@@ -4,6 +4,7 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include <gl/GL.h>
+#include "Debug/Instrumentor.h"
 namespace miosGE {
 	OpenGLContext::OpenGLContext(GLFWwindow* windowHandle) :
 		m_WindowHandle(windowHandle)
@@ -15,6 +16,8 @@ namespace miosGE {
 	}
 	
 	void OpenGLContext::Init() {
+		MIOS_PROFILE_FUNCTION();
+
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		MIOS_CORE_ASSERT(status, "Failed to initialize Glad");
@@ -25,6 +28,8 @@ namespace miosGE {
 		MIOS_CORE_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
 	}
 	void OpenGLContext::SwapBuffers() {
+		MIOS_PROFILE_FUNCTION();
+
 		glfwSwapBuffers(m_WindowHandle);
 	}
 

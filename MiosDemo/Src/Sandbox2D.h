@@ -16,11 +16,9 @@ public:
 	virtual void OnEvent(miosGE::Event& e) override;
 private:
 	miosGE::OrthographicCameraController m_CameraController;
-	
-	//Temp
-	miosGE::Ref<miosGE::VertexArray> m_SquareVA;
-	miosGE::Ref<miosGE::Shader> m_FlatColorShader;
-	
+
+	miosGE::Ref<miosGE::Texture2D> m_CheckerboardTexture;
+
 	glm::vec4 m_SquareColor = { 0.2f, 0.3f ,0.8f, 1.0f };
 };
 

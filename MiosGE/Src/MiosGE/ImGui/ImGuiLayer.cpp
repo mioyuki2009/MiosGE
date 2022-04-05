@@ -9,6 +9,8 @@
 
 #include "Application.h"
 
+#include "Debug/Instrumentor.h"
+
 namespace miosGE {
 
 	ImGuiLayer::ImGuiLayer():
@@ -22,6 +24,8 @@ namespace miosGE {
 	}
 	
 	void ImGuiLayer::OnAttach() {
+		MIOS_PROFILE_FUNCTION();
+
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -49,18 +53,24 @@ namespace miosGE {
 	}
 	
 	void ImGuiLayer::OnDetach() {
+		MIOS_PROFILE_FUNCTION();
+
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 	}
 
 	void ImGuiLayer::Begin() {
+		MIOS_PROFILE_FUNCTION();
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 	}
 
 	void ImGuiLayer::End() {
+		MIOS_PROFILE_FUNCTION();
+
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::Get();
 		//io.DisplaySize = ImVec2(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());
@@ -77,11 +87,5 @@ namespace miosGE {
 		}
 		
 	}
-
-	void ImGuiLayer::OnImGuiRender() {
-		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
-	}
-
 }
 

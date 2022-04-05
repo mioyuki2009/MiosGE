@@ -2,12 +2,16 @@
 #include "OpenGLRendererAPI.h"
 
 #include "glad/glad.h"
+#include "Debug/Instrumentor.h"
 
 namespace miosGE {
 
 	void OpenGLRendererAPI::Init() {
+		MIOS_PROFILE_FUNCTION();
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_DEPTH_TEST);
 	}
 
 	void OpenGLRendererAPI::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
@@ -24,6 +28,7 @@ namespace miosGE {
 	
 	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray) {
 		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffers()->GetCount(), GL_UNSIGNED_INT, nullptr);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 }
