@@ -13,8 +13,8 @@
 #include <unordered_map>  
 #include <unordered_set>
 
-#include "Core.h"
-#include "Log.h"
+#include "Core/Core.h"
+#include "Core/Log.h"
 
 #ifdef MIOS_WIN64
 #include <windows.h>

@@ -193,6 +193,12 @@ namespace miosGE {
 		UploadUniformInt(name, value);
 	}
 
+	void OpenGLShader::SetIntArray(const std::string& name, int* values, uint32_t count) {
+		MIOS_PROFILE_FUNCTION();
+
+		UploadUniformIntArray(name, values, count);
+	}
+
 	void OpenGLShader::SetFloat(const std::string& name, float value) {
 		MIOS_PROFILE_FUNCTION();
 
@@ -224,10 +230,19 @@ namespace miosGE {
 		}
 		GLint loc = m_ParamMap[name];
 
-		//GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1i(loc, value);
 	}
 	
+	void OpenGLShader::UploadUniformIntArray(const std::string& name, int* values, uint32_t count) {
+		if (m_ParamMap.find(name) == m_ParamMap.end()) {
+			GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+			m_ParamMap[name] = location;
+		}
+		GLint loc = m_ParamMap[name];
+
+		glUniform1iv(loc, count, values);
+	}
+
 	void OpenGLShader::UploadUniformFloat(const std::string& name, float value) {
 		if (m_ParamMap.find(name) == m_ParamMap.end()) {
 			GLint location = glGetUniformLocation(m_RendererID, name.c_str());
@@ -235,7 +250,6 @@ namespace miosGE {
 		}
 		GLint loc = m_ParamMap[name];
 
-		//GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1f(loc, value);
 	}
 
@@ -246,7 +260,6 @@ namespace miosGE {
 		}
 		GLint loc = m_ParamMap[name];
 
-		//GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform2f(loc, value.x, value.y);
 	}
 
@@ -257,7 +270,6 @@ namespace miosGE {
 		}
 		GLint loc = m_ParamMap[name];
 
-		//GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform3f(loc, value.x, value.y, value.z);
 	}
 
@@ -268,7 +280,6 @@ namespace miosGE {
 		}
 		GLint loc = m_ParamMap[name];
 
-		//GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform4f(loc, value.x, value.y, value.z, value.w);
 	}
 
@@ -279,7 +290,6 @@ namespace miosGE {
 		}
 		GLint loc = m_ParamMap[name];
 
-		//GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniformMatrix3fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
@@ -290,7 +300,6 @@ namespace miosGE {
 		}
 		GLint loc = m_ParamMap[name];
 
-		//GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 }

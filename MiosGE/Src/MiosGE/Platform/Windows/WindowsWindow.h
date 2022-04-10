@@ -1,5 +1,5 @@
 #pragma once
-#include "Window.h"
+#include "Core/Window.h"
 #include "GLFW/glfw3.h"
 #include "Renderer/GraphicsContext.h"
 struct GLFWwindow;
@@ -14,8 +14,8 @@ namespace miosGE {
 
         void OnUpdate() override;
 
-        inline unsigned int GetWidth() const override { return m_Data.Width; }
-        inline unsigned int GetHeight() const override { return m_Data.Height; }
+        inline uint32_t GetWidth() const override { return m_Data.Width; }
+        inline uint32_t GetHeight() const override { return m_Data.Height; }
 
         inline void SetEventCallback(const EventCallbackFn& callback) { m_Data.EventCallback = callback; }
         void SetVSync(bool enabled);

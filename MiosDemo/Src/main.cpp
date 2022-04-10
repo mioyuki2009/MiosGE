@@ -1,6 +1,6 @@
 
 #include "MiosGE/MioGE.h"
-#include "EntryPoint.h"
+#include "Core/EntryPoint.h"
 #include "imgui.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 #include "glm/gtc/type_ptr.hpp"
@@ -17,7 +17,7 @@ public:
 			 0.0f,  0.5f, 0.0f , 0.8f, 0.8f, 0.2f, 1.0f,
 		};
 		miosGE::Ref<miosGE::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(miosGE::VertexBuffer::Create(vertices, sizeof(vertices)));
+		vertexBuffer = miosGE::VertexBuffer::Create(vertices, sizeof(vertices));
 		miosGE::BufferLayout layout = {
 			{miosGE::ShaderDataType::Float3, "a_Position"},
 			{miosGE::ShaderDataType::Float4, "a_Color"},
@@ -27,7 +27,7 @@ public:
 
 		uint32_t indices[3] = { 0,1,2 };
 		miosGE::Ref<miosGE::IndexBuffer> indexBuffer;
-		indexBuffer.reset(miosGE::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		indexBuffer = miosGE::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
 		m_SquareVA = miosGE::VertexArray::Create();
@@ -38,7 +38,7 @@ public:
 			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
 		miosGE::Ref<miosGE::VertexBuffer> squareVB;
-		squareVB.reset(miosGE::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		squareVB = miosGE::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout({
 			{miosGE::ShaderDataType::Float3, "a_Position"},
 			{miosGE::ShaderDataType::Float2, "a_Texcoord"},
@@ -47,7 +47,7 @@ public:
 
 		uint32_t squareIndices[6] = { 0,1,2,2,3,0 };
 		miosGE::Ref<miosGE::IndexBuffer> squareIB;
-		squareIB.reset(miosGE::IndexBuffer::Create(squareIndices, sizeof(squareIndices)));
+		squareIB = miosGE::IndexBuffer::Create(squareIndices, sizeof(squareIndices));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
 		std::string vertexSrc = R"(
