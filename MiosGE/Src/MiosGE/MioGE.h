@@ -13,6 +13,10 @@
 
 #include "Core/TimeStep.h"
 
+#include "Scene/Scene.h"
+#include "Scene/Components.h"
+#include "Scene/Entity.h"
+
 #include "Renderer/Renderer2D.h"
 #include "Renderer/Texture.h"
 #include "Renderer/Renderer.h"

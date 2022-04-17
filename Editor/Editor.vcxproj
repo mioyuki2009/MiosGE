@@ -120,7 +120,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;MIOS_WIN64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;$(SolutionDir)Bin\Include;D:\MiosGE\Bin\Include\MiosGE;$(SolutionDir)MiosGE\vendor\glm;$(SolutionDir)MiosGE\vendor\imgui;$(SolutionDir)MiosGE\vendor\GLAD\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;$(SolutionDir)Bin\Include;D:\MiosGE\Bin\Include\MiosGE;$(SolutionDir)MiosGE\vendor\glm;$(SolutionDir)MiosGE\vendor\imgui;$(SolutionDir)MiosGE\vendor\GLAD\include;$(SolutionDir)MiosGE\vendor\entt</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

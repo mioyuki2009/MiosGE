@@ -1002,6 +1002,15 @@
     <ClInclude Include="Src\MiosGE\Scene\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Src\MiosGE\Scene\Components.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MiosGE\Scene\Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MiosGE\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\MiosGE\Core\Application.cpp">
@@ -1092,6 +1101,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\MiosGE\Scene\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MiosGE\Scene\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

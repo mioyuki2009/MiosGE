@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\MiosGE\Camera.h" />
     <ClInclude Include="Src\MiosGE\Core\Timestep.h" />
     <ClInclude Include="Src\MiosGE\Debug\Instrumentor.h" />
     <ClInclude Include="Src\MiosGE\Core\OrthographicCameraController.h" />
@@ -59,6 +60,8 @@
     <ClInclude Include="Src\MiosGE\Renderer\VertexArray.h" />
     <ClInclude Include="Src\MiosGE\Core\Window.h" />
     <ClInclude Include="Src\MiosGE\Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="Src\MiosGE\Scene\Components.h" />
+    <ClInclude Include="Src\MiosGE\Scene\Entity.h" />
     <ClInclude Include="Src\MiosGE\Scene\Scene.h" />
     <ClInclude Include="vendor\entt\entt.hpp" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
@@ -380,6 +383,7 @@
     <ClCompile Include="Src\MiosGE\Renderer\SubTexture2D.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\Texture.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\VertexArray.cpp" />
+    <ClCompile Include="Src\MiosGE\Scene\Entity.cpp" />
     <ClCompile Include="Src\MiosGE\Scene\Scene.cpp" />
     <ClCompile Include="vendor\stb_image\stb_image.cpp" />
   </ItemGroup>
@@ -659,6 +663,7 @@ xcopy $(ProjectDir)Src\MiosGE\Events\*.h $(SolutionDir)Bin\Include\MiosGE\Events
 xcopy $(ProjectDir)Src\MiosGE\ImGui\*.h $(SolutionDir)Bin\Include\MiosGE\ImGui\ /y
 xcopy $(ProjectDir)Src\MiosGE\Platform\OpenGL\*.h $(SolutionDir)Bin\Include\MiosGE\Platform\OpenGL\ /y
 xcopy $(ProjectDir)Src\MiosGE\Core\*.h $(SolutionDir)Bin\Include\MiosGE\Core\ /y
+xcopy $(ProjectDir)Src\MiosGE\Scene\*.h $(SolutionDir)Bin\Include\MiosGE\Scene\ /y
 xcopy $(ProjectDir)Src\MiosGE\Debug\*.h $(SolutionDir)Bin\Include\MiosGE\Debug\ /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
