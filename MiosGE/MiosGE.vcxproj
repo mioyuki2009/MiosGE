@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Src\MiosGE\Camera.h" />
+    <ClInclude Include="Src\MiosGE\Renderer\Camera.h" />
     <ClInclude Include="Src\MiosGE\Core\Timestep.h" />
     <ClInclude Include="Src\MiosGE\Debug\Instrumentor.h" />
     <ClInclude Include="Src\MiosGE\Core\OrthographicCameraController.h" />
@@ -63,6 +63,9 @@
     <ClInclude Include="Src\MiosGE\Scene\Components.h" />
     <ClInclude Include="Src\MiosGE\Scene\Entity.h" />
     <ClInclude Include="Src\MiosGE\Scene\Scene.h" />
+    <ClInclude Include="Src\MiosGE\Scene\SceneCamera.h" />
+    <ClInclude Include="Src\MiosGE\Scene\SceneSerializer.h" />
+    <ClInclude Include="Src\MiosGE\Scene\ScriptableEntity.h" />
     <ClInclude Include="vendor\entt\entt.hpp" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\compute_common.hpp" />
@@ -385,6 +388,8 @@
     <ClCompile Include="Src\MiosGE\Renderer\VertexArray.cpp" />
     <ClCompile Include="Src\MiosGE\Scene\Entity.cpp" />
     <ClCompile Include="Src\MiosGE\Scene\Scene.cpp" />
+    <ClCompile Include="Src\MiosGE\Scene\SceneCamera.cpp" />
+    <ClCompile Include="Src\MiosGE\Scene\SceneSerializer.cpp" />
     <ClCompile Include="vendor\stb_image\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -396,6 +401,9 @@
     </ProjectReference>
     <ProjectReference Include="..\ImGui\ImGui.vcxproj">
       <Project>{6be205fb-d19c-4066-94a9-e7b44f9709bd}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\yaml-cpp\yaml-cpp.vcxproj">
+      <Project>{13751313-555a-4fd5-b4b2-f281c3855add}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -640,9 +648,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;MIOS_WIN64;MIOS_ENABLE_ASSERTS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>YAML_CPP_STATIC_DEFINE;_DEBUG;_CONSOLE;MIOS_WIN64;MIOS_ENABLE_ASSERTS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;$(SolutionDir)MiosGE\Src;$(SolutionDir)MiosGE\vendor\GLFW\include;$(SolutionDir)MiosGE\Src\MiosGE;$(SolutionDir)MiosGE\vendor\GLAD\include;$(SolutionDir)MiosGE\vendor\imgui;$(SolutionDir)MiosGE\vendor\glm;$(SolutionDir)MiosGE\vendor\stb_image;$(SolutionDir)MiosGE\vendor\entt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;$(SolutionDir)MiosGE\Src;$(SolutionDir)MiosGE\vendor\GLFW\include;$(SolutionDir)MiosGE\Src\MiosGE;$(SolutionDir)MiosGE\vendor\GLAD\include;$(SolutionDir)MiosGE\vendor\imgui;$(SolutionDir)MiosGE\vendor\glm;$(SolutionDir)MiosGE\vendor\stb_image;$(SolutionDir)MiosGE\vendor\entt;$(SolutionDir)MiosGE\vendor\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>MiosPch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>

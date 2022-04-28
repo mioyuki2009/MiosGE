@@ -1,17 +1,18 @@
 #pragma once
 
 #include "Event.h"
+#include "Core/KeyCodes.h"
 
 namespace miosGE {
 	class MIOS_API KeyEvent : public Event {
 	public:
 		
-		inline unsigned int GetKeyCode() const { return m_iKeyCode; }
+		KeyCode GetKeyCode() const { return m_iKeyCode; }
 		inline unsigned int GetMode() const { return m_iMode; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 	protected:
-		KeyEvent(int keycode, int mode)
+		KeyEvent(KeyCode keycode, int mode)
 			:m_iKeyCode(keycode), m_iMode(mode){}
 		int m_iKeyCode;
 		int m_iMode;

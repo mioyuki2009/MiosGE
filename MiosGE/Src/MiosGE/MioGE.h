@@ -12,10 +12,12 @@
 #include "Events/Event.h"
 
 #include "Core/TimeStep.h"
+#include "Core/KeyCodes.h"
 
 #include "Scene/Scene.h"
 #include "Scene/Components.h"
 #include "Scene/Entity.h"
+#include "Scene/ScriptableEntity.h"
 
 #include "Renderer/Renderer2D.h"
 #include "Renderer/Texture.h"

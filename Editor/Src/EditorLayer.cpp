@@ -2,8 +2,7 @@
 #include "imgui.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include <stdio.h>
-#include <chrono>
+#include "MiosGE/Scene/SceneSerializer.h"
 
 namespace miosGE {
 
@@ -23,18 +22,61 @@ namespace miosGE {
         m_Framebuffer = Framebuffer::Create(fbSpec);
         m_ActiveScene = CreateRef<Scene>();
 
-     
+
+#if 0
         auto square = m_ActiveScene->CreateEntity("Green Square");
-        square.AddComponent<SpriteTransformComponent>(glm::vec4{ 0.0f, 1.0f,0.0f,1.0f });
+        square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f,0.0f,1.0f });
+
+        auto redSquare = m_ActiveScene->CreateEntity("Red Square");
+        redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f,0.0f,1.0f });
 
         m_SquareEntity = square;
 
-        m_CameraEntity = m_ActiveScene->CreateEntity("Camera Square");
-        m_CameraEntity.AddComponent<CameraComponent>(glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+        m_CameraEntity = m_ActiveScene->CreateEntity("Camera A");
+        m_CameraEntity.AddComponent<CameraComponent>();
         m_PrimaryCamera = true;
-        m_SecondCamera = m_ActiveScene->CreateEntity("Clip-Space Camera Square");
-        auto& cc = m_SecondCamera.AddComponent<CameraComponent>(glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f));
+        m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
+        auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
         cc.Primary = false;
+
+        class CameraController : public ScriptableEntity
+        {
+        public:
+            void OnCreate()
+            {
+                auto& translation = GetComponent<TransformComponent>().Translation;
+                translation.x = rand() % 10 - 5.0f;
+            }
+
+            void OnDestory() 
+            {
+            
+            }
+
+            void OnUpdate(Timestep ts)
+            {
+                auto& translation = GetComponent<TransformComponent>().Translation;
+                float speed = 5.0f;
+
+                if (Input::IsKeyPressed(Key::A))
+                    translation.x -= speed * ts;
+                if (Input::IsKeyPressed(Key::D))
+                    translation.x += speed * ts;
+                if (Input::IsKeyPressed(Key::W))
+                    translation.y += speed * ts;
+                if (Input::IsKeyPressed(Key::S))
+                    translation.y -= speed * ts;
+            }
+
+        };
+
+        m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+        m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+
+#endif
+
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
     }
 
     void EditorLayer::OnDetach()
@@ -46,6 +88,16 @@ namespace miosGE {
     void EditorLayer::OnUpdate(Timestep ts)
     {
         MIOS_PROFILE_FUNCTION();
+
+        if (FramebufferSpecification spec = m_Framebuffer->GetSpecification();
+            m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && 
+            (spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
+        {
+            m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);      
+            m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+
+            m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+        }
 
         //update
         if (m_ViewportFocused)
@@ -111,23 +163,44 @@ namespace miosGE {
 
         // Submit the DockSpace
         ImGuiIO& io = ImGui::GetIO();
+        ImGuiStyle& style = ImGui::GetStyle();
+        float minWinSizeX = style.WindowMinSize.x;
+        style.WindowMinSize.x = 370.0f;
         if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
         {
             ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
             ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
         }
 
+        style.WindowMinSize.x = minWinSizeX;
+
         if (ImGui::BeginMenuBar())
         {
+           
+
             if (ImGui::BeginMenu("File"))
             {
+                if (ImGui::MenuItem("Serialize"))
+                {
+                    SceneSerializer serializer(m_ActiveScene);
+                    serializer.Serialize("assets/scenes/Example.mios");
+                }
+
+                if (ImGui::MenuItem("Deserialize"))
+                {
+                    SceneSerializer serializer(m_ActiveScene);
+                    serializer.Deserialize("assets/scenes/Example.mios");
+                }
+
                 if (ImGui::MenuItem("Exit")) Application::Get().Close();
                 ImGui::EndMenu();
             }
             ImGui::EndMenuBar();
         }
 
-        ImGui::Begin("Setting");
+        m_SceneHierarchyPanel.OnImGuiRender();
+
+        ImGui::Begin("Stats");
 
         auto stats = Renderer2D::GetStats();
         ImGui::Text("Renderer2D Stats:");
@@ -136,25 +209,6 @@ namespace miosGE {
         ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
         ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-      
-        if (m_SquareEntity) {
-            ImGui::Separator();
-            auto& tag = m_SquareEntity.GetComponent<TagComponent>().Tag;
-            ImGui::Text("%s", tag.c_str());
-            auto& squareColor = m_SquareEntity.GetComponent<SpriteTransformComponent>().Color;
-            ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
-        }
-
-        ImGui::DragFloat3("Camera Transform",
-            glm::value_ptr(m_CameraEntity.GetComponent<TransformComponent>().Transform[3]));
-
-        if (ImGui::Checkbox("Camera A", &m_PrimaryCamera)) {
-            m_CameraEntity.GetComponent<CameraComponent>().Primary = m_PrimaryCamera;
-            m_SecondCamera.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
-        }
-
-       
-
         ImGui::End();
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
@@ -162,16 +216,9 @@ namespace miosGE {
         m_ViewportFocused = ImGui::IsWindowFocused();
         m_ViewportHovered = ImGui::IsWindowHovered();
         Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
-
-        ImVec2 viewportPannelSize = ImGui::GetContentRegionAvail();
-
-        if (m_ViewportSize != *(glm::vec2*)&viewportPannelSize && viewportPannelSize.x > 0 && viewportPannelSize.y > 0)
-        {
-            m_Framebuffer->Resize((uint32_t)viewportPannelSize.x, (uint32_t)viewportPannelSize.y);
-            m_ViewportSize = { viewportPannelSize.x, viewportPannelSize.y };
-
-            m_CameraController.OnResize(viewportPannelSize.x, viewportPannelSize.y);
-        }
+        
+        ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+        m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
         uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
         ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
