@@ -13,3 +13,6 @@
 [submodule "MiosGE/vendor/yaml-cpp"]
 	path = MiosGE/vendor/yaml-cpp
 	url = https://github.com/jbeder/yaml-cpp
+[submodule "MiosGE/vendor/ImGuizmo"]
+	path = MiosGE/vendor/ImGuizmo
+	url = https://github.com/CedricGuillemet/ImGuizmo

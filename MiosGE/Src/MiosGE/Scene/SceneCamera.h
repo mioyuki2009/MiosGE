@@ -33,7 +33,7 @@ namespace miosGE {
 		void SetOrghographicFarClip(float farClip) { m_OrghographicFar = farClip; RecalculateProjection(); }
 
 		ProjectionType GetProjectionType() { return m_ProjectionType; }
-		void SetProjectionType(ProjectionType type) { m_ProjectionType = type; }
+		void SetProjectionType(ProjectionType type) { m_ProjectionType = type; RecalculateProjection();}
 
 	private:
 		void RecalculateProjection();

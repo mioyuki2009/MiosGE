@@ -3,7 +3,7 @@
 #include "Core/Timestep.h"
 namespace miosGE {
 	class Entity;
-
+	class EditorCamera;
 	class Scene {
 	public:
 		Scene();
@@ -12,8 +12,12 @@ namespace miosGE {
 		Entity CreateEntity(const std::string& name = std::string());
 		void DestoryEntity(Entity entity);
 		
-		void OnUpdate(Timestep ts);
+		void OnUpdateEditor(Timestep ts, EditorCamera& camera);
+		void OnUpdateRuntime(Timestep ts);
 		void OnViewportResize(uint32_t width, uint32_t height);
+
+		Entity GetPrimaryCameraEntity();
+
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);

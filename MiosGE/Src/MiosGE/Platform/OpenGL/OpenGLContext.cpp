@@ -5,7 +5,7 @@
 #include "GLFW/glfw3.h"
 #include <gl/GL.h>
 #include "Debug/Instrumentor.h"
-namespace miosGE {
+namespace miosGE { 
 	OpenGLContext::OpenGLContext(GLFWwindow* windowHandle) :
 		m_WindowHandle(windowHandle)
 	{

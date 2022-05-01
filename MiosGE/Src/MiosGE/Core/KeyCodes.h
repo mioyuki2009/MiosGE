@@ -1,5 +1,5 @@
 #pragma once
-
+#include "stdint.h"
 namespace miosGE
 {
 	using KeyCode = uint16_t;

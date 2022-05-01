@@ -19,6 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\MiosGE\Core\MouseCodes.h" />
+    <ClInclude Include="Src\MiosGE\Core\Timer.h" />
+    <ClInclude Include="Src\MiosGE\Math\Math.h" />
+    <ClInclude Include="Src\MiosGE\Platform\OpenGL\OpenGLUniformBuffer.h" />
     <ClInclude Include="Src\MiosGE\Renderer\Camera.h" />
     <ClInclude Include="Src\MiosGE\Core\Timestep.h" />
     <ClInclude Include="Src\MiosGE\Debug\Instrumentor.h" />
@@ -27,6 +31,7 @@
     <ClInclude Include="Src\MiosGE\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="Src\MiosGE\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="Src\MiosGE\Platform\OpenGL\OpenGLTexture.h" />
+    <ClInclude Include="Src\MiosGE\Renderer\EditorCamera.h" />
     <ClInclude Include="Src\MiosGE\Renderer\Framebuffer.h" />
     <ClInclude Include="Src\MiosGE\Renderer\OrthographicCamera.h" />
     <ClInclude Include="Src\MiosGE\Renderer\Renderer2D.h" />
@@ -57,6 +62,7 @@
     <ClInclude Include="Src\MiosGE\Renderer\Shader.h" />
     <ClInclude Include="Src\MiosGE\Renderer\SubTexture2D.h" />
     <ClInclude Include="Src\MiosGE\Renderer\Texture.h" />
+    <ClInclude Include="Src\MiosGE\Renderer\UniformBuffer.h" />
     <ClInclude Include="Src\MiosGE\Renderer\VertexArray.h" />
     <ClInclude Include="Src\MiosGE\Core\Window.h" />
     <ClInclude Include="Src\MiosGE\Platform\Windows\WindowsWindow.h" />
@@ -66,6 +72,7 @@
     <ClInclude Include="Src\MiosGE\Scene\SceneCamera.h" />
     <ClInclude Include="Src\MiosGE\Scene\SceneSerializer.h" />
     <ClInclude Include="Src\MiosGE\Scene\ScriptableEntity.h" />
+    <ClInclude Include="Src\MiosGE\Utils\PlatformUtils.h" />
     <ClInclude Include="vendor\entt\entt.hpp" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\compute_common.hpp" />
@@ -357,10 +364,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\MiosGE\Core\OrthographicCameraController.cpp" />
+    <ClCompile Include="Src\MiosGE\Math\Math.cpp" />
     <ClCompile Include="Src\MiosGE\Platform\OpenGL\OpenGLFramebuffer.cpp" />
     <ClCompile Include="Src\MiosGE\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="Src\MiosGE\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="Src\MiosGE\Platform\OpenGL\OpenGLTexture.cpp" />
+    <ClCompile Include="Src\MiosGE\Platform\OpenGL\OpenGLUniformBuffer.cpp" />
+    <ClCompile Include="Src\MiosGE\Platform\Windows\WindowsPlatformUtils.cpp" />
+    <ClCompile Include="Src\MiosGE\Renderer\EditorCamera.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\Framebuffer.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\RenderCommand.cpp" />
@@ -385,6 +396,7 @@
     <ClCompile Include="Src\MiosGE\Renderer\Shader.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\SubTexture2D.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\Texture.cpp" />
+    <ClCompile Include="Src\MiosGE\Renderer\UniformBuffer.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\VertexArray.cpp" />
     <ClCompile Include="Src\MiosGE\Scene\Entity.cpp" />
     <ClCompile Include="Src\MiosGE\Scene\Scene.cpp" />
@@ -398,6 +410,9 @@
     </ProjectReference>
     <ProjectReference Include="..\GLFW\GLFW.vcxproj">
       <Project>{af095af0-fa78-4cf1-9938-91edd1465d88}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ImGuizmo\ImGuizmo.vcxproj">
+      <Project>{bc9a0eda-d69e-498c-a72d-4f4ec069f894}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ImGui\ImGui.vcxproj">
       <Project>{6be205fb-d19c-4066-94a9-e7b44f9709bd}</Project>
@@ -650,7 +665,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>YAML_CPP_STATIC_DEFINE;_DEBUG;_CONSOLE;MIOS_WIN64;MIOS_ENABLE_ASSERTS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;$(SolutionDir)MiosGE\Src;$(SolutionDir)MiosGE\vendor\GLFW\include;$(SolutionDir)MiosGE\Src\MiosGE;$(SolutionDir)MiosGE\vendor\GLAD\include;$(SolutionDir)MiosGE\vendor\imgui;$(SolutionDir)MiosGE\vendor\glm;$(SolutionDir)MiosGE\vendor\stb_image;$(SolutionDir)MiosGE\vendor\entt;$(SolutionDir)MiosGE\vendor\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;$(SolutionDir)MiosGE\Src;$(SolutionDir)MiosGE\vendor\GLFW\include;$(SolutionDir)MiosGE\Src\MiosGE;$(SolutionDir)MiosGE\vendor\GLAD\include;$(SolutionDir)MiosGE\vendor\imgui;$(SolutionDir)MiosGE\vendor\glm;$(SolutionDir)MiosGE\vendor\stb_image;$(SolutionDir)MiosGE\vendor\entt;$(SolutionDir)MiosGE\vendor\yaml-cpp\include;$(SolutionDir)MiosGE\vendor\ImGuizmo;$(VULKAN_SDK)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>MiosPch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -672,8 +687,14 @@ xcopy $(ProjectDir)Src\MiosGE\ImGui\*.h $(SolutionDir)Bin\Include\MiosGE\ImGui\ 
 xcopy $(ProjectDir)Src\MiosGE\Platform\OpenGL\*.h $(SolutionDir)Bin\Include\MiosGE\Platform\OpenGL\ /y
 xcopy $(ProjectDir)Src\MiosGE\Core\*.h $(SolutionDir)Bin\Include\MiosGE\Core\ /y
 xcopy $(ProjectDir)Src\MiosGE\Scene\*.h $(SolutionDir)Bin\Include\MiosGE\Scene\ /y
-xcopy $(ProjectDir)Src\MiosGE\Debug\*.h $(SolutionDir)Bin\Include\MiosGE\Debug\ /y</Command>
+xcopy $(ProjectDir)Src\MiosGE\Debug\*.h $(SolutionDir)Bin\Include\MiosGE\Debug\ /y
+xcopy $(ProjectDir)Src\MiosGE\Utils\*.h $(SolutionDir)Bin\Include\MiosGE\Utils\ /y
+xcopy $(ProjectDir)Src\MiosGE\Math\*.h $(SolutionDir)Bin\Include\MiosGE\Math\ /y</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>shaderc_sharedd.lib;spirv-cross-cored.lib;spirv-cross-glsld.lib;SPIRV-Toolsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

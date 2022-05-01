@@ -4,6 +4,11 @@
 #include "Shader.h"
 #include "RenderCommand.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "EditorCamera.h"
+#include "Scene/Components.h"
+#include "Renderer/UniformBuffer.h"
+#include "glm/gtc/type_ptr.hpp"
+
 namespace miosGE {
 
 	struct QuadVertex
@@ -13,6 +18,9 @@ namespace miosGE {
 		glm::vec2 TexCoord;
 		float TexIndex;
 		float TilingFactor;
+
+		// Editor-only
+		int EntityID = 0;
 	};
 
 	struct Renderer2DData
@@ -37,6 +45,13 @@ namespace miosGE {
 		glm::vec4 QuadVertexPositions[4] = {glm::vec4(0.0f)};
 
 		Renderer2D::Statistics Stats;
+
+		struct CameraData
+		{
+			glm::mat4 ViewProjection;
+		};
+		CameraData CameraBuffer;
+		Ref<UniformBuffer> CameraUniformBuffer;
 	};
 
 
@@ -54,7 +69,8 @@ namespace miosGE {
 			{ShaderDataType::Float4, "a_Color"},
 			{ShaderDataType::Float2, "a_TexCoord"},
 			{ShaderDataType::Float, "a_textureIndex"},
-			{ShaderDataType::Float, "a_TillingFactor"}
+			{ShaderDataType::Float, "a_TillingFactor"},
+			{ShaderDataType::Int, "a_EntityID"}
 			});
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
@@ -90,8 +106,6 @@ namespace miosGE {
 		}
 
 		s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
 
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
 
@@ -99,6 +113,8 @@ namespace miosGE {
 		s_Data.QuadVertexPositions[1] = {  0.5f, -0.5f, 0.0f, 1.0f };
 		s_Data.QuadVertexPositions[2] = {  0.5f,  0.5f, 0.0f, 1.0f };
 		s_Data.QuadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
+
+		s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
 	}
 
 	void Renderer2D::Shutdown()
@@ -112,16 +128,21 @@ namespace miosGE {
 	{
 		MIOS_PROFILE_FUNCTION();
 
-		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
+		s_Data.CameraBuffer.ViewProjection = camera.GetProjection() * glm::inverse(transform);
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
-
-		s_Data.QuadIndexCount = 0;
-		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
-
-		s_Data.TextureSlotIndex = 1;
+		StartBatch();
 	
+	}
+
+	void Renderer2D::BeginScene(const EditorCamera& camera)
+	{
+		MIOS_PROFILE_FUNCTION();
+
+		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
+
+		StartBatch();
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
@@ -131,15 +152,15 @@ namespace miosGE {
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 
-		s_Data.QuadIndexCount = 0;
-		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
-
-		s_Data.TextureSlotIndex = 1;
+		StartBatch();
 	}
 
 	void Renderer2D::EndScene()
 	{
 		MIOS_PROFILE_FUNCTION();
+
+		if (s_Data.QuadIndexCount == 0)
+			return;
 
 		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
 		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
@@ -153,6 +174,8 @@ namespace miosGE {
 			s_Data.TextureSlots[i]->Bind(i);
 		}
 
+		s_Data.TextureShader->Bind();
+
 		RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 		s_Data.Stats.DrawCalls++;
 	}
@@ -160,6 +183,11 @@ namespace miosGE {
 	void Renderer2D::FlushAndReset() {
 		EndScene();
 
+		StartBatch();
+	}
+
+	void Renderer2D::StartBatch() 
+	{
 		s_Data.QuadIndexCount = 0;
 		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
 
@@ -241,7 +269,7 @@ namespace miosGE {
 
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4 color)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4 color, int entityID)
 	{
 		MIOS_PROFILE_FUNCTION();
 
@@ -262,6 +290,7 @@ namespace miosGE {
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -270,7 +299,7 @@ namespace miosGE {
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor, int entityID)
 	{
 		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices) {
 			FlushAndReset();
@@ -300,6 +329,7 @@ namespace miosGE {
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -446,6 +476,11 @@ namespace miosGE {
 
 		s_Data.Stats.QuadCount++;
 
+	}
+
+	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID) 
+	{
+		DrawQuad(transform, src.Color, entityID);
 	}
 
 	void Renderer2D::ResetStates() {

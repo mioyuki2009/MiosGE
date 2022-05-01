@@ -4,6 +4,7 @@
 #include "glm/glm.hpp"
 #include "Components.h"
 #include "Renderer/Renderer2D.h"
+#include "Renderer/EditorCamera.h"
 #include "Entity.h"
 namespace miosGE {
 	Scene::Scene()
@@ -29,11 +30,27 @@ namespace miosGE {
 		m_Registry.destroy(entity);
 	}
 
-	void Scene::OnUpdate(Timestep ts) {
+	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
+	{
+		Renderer2D::BeginScene(camera);
+
+		auto group = m_Registry.group(entt::get<TransformComponent, SpriteRendererComponent>);
+		for (auto entity : group) 
+		{
+			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+			//Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+			Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
+		}
+
+		Renderer2D::EndScene();
+	}
+
+	void Scene::OnUpdateRuntime(Timestep ts) {
 
 		// Update script
 		{
-			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) {
+			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc) 
+			{
 				if (!nsc.Instance) 
 				{
 					nsc.Instance = nsc.InstantiateScript();
@@ -66,7 +83,7 @@ namespace miosGE {
 			auto group = m_Registry.group(entt::get<TransformComponent, SpriteRendererComponent>);
 			for (auto entity : group) {
 				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-				Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 			}
 
 			Renderer2D::EndScene();
@@ -83,6 +100,19 @@ namespace miosGE {
 				cameraComponent.camera.SetViewportSize(width, height);
 			}
 		}
+	}
+
+	Entity Scene::GetPrimaryCameraEntity()
+	{
+		auto view = m_Registry.view<CameraComponent>();
+		for (auto entity : view)
+		{
+			auto camera = view.get<CameraComponent>(entity);
+			if (camera.Primary)
+				return Entity{ entity,this };
+		
+		}
+		return {};
 	}
 
 	template<typename T>
