@@ -17,12 +17,12 @@ namespace miosGE {
 		RecalculateProjection();
 	}
 
-	void SceneCamera::SetOrghographic(float size, float nearClip, float farClip)
+	void SceneCamera::SetOrthographic(float size, float nearClip, float farClip)
 	{
-		m_ProjectionType = ProjectionType::Orghographic;
-		m_OrghographicSize = size;
-		m_OrghographicNear = nearClip;
-		m_OrghographicFar = farClip;
+		m_ProjectionType = ProjectionType::Orthographic;
+		m_OrthographicSize = size;
+		m_OrthographicNear = nearClip;
+		m_OrthographicFar = farClip;
 		RecalculateProjection();
 	}
 
@@ -32,14 +32,14 @@ namespace miosGE {
 		{
 			m_Projection = glm::perspective(m_PerspectiveFov, m_AspectRatio, m_PerspectiveNear, m_PerspectiveFar);
 		}
-		else if (m_ProjectionType == ProjectionType::Orghographic) 
+		else if (m_ProjectionType == ProjectionType::Orthographic) 
 		{
-			float orthoLeft = -m_OrghographicSize * m_AspectRatio * 0.5f;
+			float orthoLeft = -m_OrthographicSize * m_AspectRatio * 0.5f;
 			float orthoRight = -orthoLeft;
-			float orthoBottom = -m_OrghographicSize * 0.5f;
+			float orthoBottom = -m_OrthographicSize * 0.5f;
 			float orthoTop = -orthoBottom;
 			m_Projection = glm::ortho(orthoLeft, orthoRight, orthoBottom, orthoTop,
-				m_OrghographicNear, m_OrghographicFar);
+				m_OrthographicNear, m_OrthographicFar);
 		}
 		
 	}

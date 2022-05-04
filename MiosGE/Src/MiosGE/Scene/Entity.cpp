@@ -7,6 +7,4 @@ namespace miosGE {
 		m_EntityHandle(handle), m_Scene(scene)
 	{
 	}
-
-
 }

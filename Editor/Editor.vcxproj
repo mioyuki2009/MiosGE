@@ -150,11 +150,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\EditorLayer.h" />
+    <ClInclude Include="Src\Panels\ContentBrowserPanel.h" />
     <ClInclude Include="Src\Panels\SceneHierarchyPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\EditorApp.cpp" />
     <ClCompile Include="Src\EditorLayer.cpp" />
+    <ClCompile Include="Src\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="Src\Panels\SceneHierarchyPanel.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

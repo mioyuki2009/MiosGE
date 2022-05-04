@@ -16,3 +16,6 @@
 [submodule "MiosGE/vendor/ImGuizmo"]
 	path = MiosGE/vendor/ImGuizmo
 	url = https://github.com/CedricGuillemet/ImGuizmo
+[submodule "miosGE/vendor/Box2D"]
+	path = miosGE/vendor/Box2D
+	url = https://github.com/erincatto/box2d

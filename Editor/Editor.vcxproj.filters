@@ -21,6 +21,9 @@
     <ClInclude Include="Src\Panels\SceneHierarchyPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Panels\ContentBrowserPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\EditorApp.cpp">
@@ -30,6 +33,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\Panels\SceneHierarchyPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Panels\ContentBrowserPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

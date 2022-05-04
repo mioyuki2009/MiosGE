@@ -12,6 +12,10 @@ Intermediate/
 *.user
 *.userosscache
 *.sln.docstates
+*.frag
+*.vert
+*.json
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

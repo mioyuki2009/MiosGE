@@ -39,7 +39,7 @@ namespace miosGE {
 
         
         MIOS_CORE_INFO("Create window {0},{1},{2}", props.Title, props.Width, props.Height);
-
+       
         if (s_GLFWWindowCount == 0) {
             MIOS_PROFILE_SCOPE("glfwInit");
             int success = glfwInit();

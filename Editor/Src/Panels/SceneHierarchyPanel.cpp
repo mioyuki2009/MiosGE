@@ -3,8 +3,10 @@
 #include "imgui_internal.h"
 #include "Scene/Components.h"
 #include "glm/gtc/type_ptr.hpp"
-
+#include "MiosGE/Core/Log.h"
+#include <filesystem>
 namespace miosGE {
+	extern const std::filesystem::path g_AssetPath;
 
 	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
 	{
@@ -21,25 +23,28 @@ namespace miosGE {
 	{
 		ImGui::Begin("Scene Hierarchy");
 
-		m_Context->m_Registry.each([&](auto entityID)
+		if (m_Context)
 		{
-			Entity entity{ entityID, m_Context.get() };
-			DrawEntityNode(entity);
-		});
 
-		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-			m_SelectionContext = {};
+			m_Context->m_Registry.each([&](auto entityID)
+				{
+					Entity entity{ entityID, m_Context.get() };
+					DrawEntityNode(entity);
+				});
 
-		// right-click on blank space
-		if (ImGui::BeginPopupContextWindow(0, 1, false)) 
-		{
-			if (ImGui::MenuItem("Create Empty Entity"))
+			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+				m_SelectionContext = {};
+
+			// right-click on blank space
+			if (ImGui::BeginPopupContextWindow(0, 1, false))
 			{
-				m_Context->CreateEntity("Empty Entity");
+				if (ImGui::MenuItem("Create Empty Entity"))
+				{
+					m_Context->CreateEntity("Empty Entity");
+				}
+				ImGui::EndPopup();
 			}
-			ImGui::EndPopup();
 		}
-
 
 		ImGui::End();
 
@@ -227,17 +232,60 @@ namespace miosGE {
 
 		if (ImGui::BeginPopup("AddComponent"))
 		{
-			if (ImGui::MenuItem("Camera"))
+			if (!m_SelectionContext.HasComponent<CameraComponent>())
 			{
-				m_SelectionContext.AddComponent<CameraComponent>();
-				ImGui::CloseCurrentPopup();
+				if (ImGui::MenuItem("Camera"))
+				{
+					m_SelectionContext.AddComponent<CameraComponent>();
+					ImGui::CloseCurrentPopup();
+				}
 			}
 
-			if (ImGui::MenuItem("Sprite Renderer"))
+			if (!m_SelectionContext.HasComponent<SpriteRendererComponent>())
 			{
-				m_SelectionContext.AddComponent<SpriteRendererComponent>();
-				ImGui::CloseCurrentPopup();
+				if (ImGui::MenuItem("Sprite Renderer"))
+				{
+					m_SelectionContext.AddComponent<SpriteRendererComponent>();
+					ImGui::CloseCurrentPopup();
+				}
 			}
+
+			if (!m_SelectionContext.HasComponent<CircleRendererComponent>())
+			{
+				if (ImGui::MenuItem("Circle Renderer"))
+				{
+					m_SelectionContext.AddComponent<CircleRendererComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
+
+			if (!m_SelectionContext.HasComponent<Rigidbody2DComponent>())
+			{
+				if (ImGui::MenuItem("Rigidbody 2D"))
+				{
+					m_SelectionContext.AddComponent<Rigidbody2DComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
+
+			if (!m_SelectionContext.HasComponent<BoxCollider2DComponent>())
+			{
+				if (ImGui::MenuItem("Box Collider 2D"))
+				{
+					m_SelectionContext.AddComponent<BoxCollider2DComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
+
+			if (!m_SelectionContext.HasComponent<CircleCollider2DComponent>())
+			{
+				if (ImGui::MenuItem("Circle Collider 2D"))
+				{
+					m_SelectionContext.AddComponent<CircleCollider2DComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
+
 			ImGui::EndPopup();
 		}
 
@@ -268,10 +316,10 @@ namespace miosGE {
 					if (ImGui::Selectable(projectionTypeStrings[i], isSelected)) {
 						currentProjectionTypeString = projectionTypeStrings[i];
 						camera.SetProjectionType((SceneCamera::ProjectionType)i);
-
-						if (isSelected)
-							ImGui::SetItemDefaultFocus();
 					}
+
+					if (isSelected)
+						ImGui::SetItemDefaultFocus();
 				}
 
 				ImGui::EndCombo();
@@ -292,19 +340,19 @@ namespace miosGE {
 					camera.SetPerspectiveFarClip(perspectiveFar);
 			}
 
-			if (camera.GetProjectionType() == SceneCamera::ProjectionType::Orghographic)
+			if (camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
 			{
-				float orthoSize = camera.GetOrghographicSize();
+				float orthoSize = camera.GetOrthographicSize();
 				if (ImGui::DragFloat("Size", &orthoSize))
-					camera.SetOrghographicSize(orthoSize);
+					camera.SetOrthographicSize(orthoSize);
 
-				float orthoNear = camera.GetOrghographicNearClip();
+				float orthoNear = camera.GetOrthographicNearClip();
 				if (ImGui::DragFloat("Near", &orthoNear))
-					camera.SetOrghographicNearClip(orthoNear);
+					camera.SetOrthographicNearClip(orthoNear);
 
-				float orthoFar = camera.GetOrghographicFarClip();
+				float orthoFar = camera.GetOrthographicFarClip();
 				if (ImGui::DragFloat("Far", &orthoFar))
-					camera.SetOrghographicFarClip(orthoFar);
+					camera.SetOrthographicFarClip(orthoFar);
 
 				ImGui::Checkbox("Fixed Aspect Ratio", &component.FixedAspectRatio);
 
@@ -314,8 +362,76 @@ namespace miosGE {
 		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
 		{
 			ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+			ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+				{
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
+					Ref<Texture2D> texture = Texture2D::Create(texturePath.string());
+					if (texture->IsLoaded())
+						component.Texture = texture;
+					else
+						MIOS_WARN("Could not load texture {0}", texturePath.filename().string());
+				}
+				ImGui::EndDragDropTarget();
+			}
+
+			ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
 		});
 		
-	}
+		DrawComponent<CircleRendererComponent>("Circle Renderer", entity, [](auto& component)
+		{
+			ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+			ImGui::DragFloat("Thickness", &component.Thickness, 0.025f, 0.0f, 1.0f);
+			ImGui::DragFloat("Fade", &component.Fade, 0.00025f, 0.0f, 1.0f);
+		});
 
+		DrawComponent<Rigidbody2DComponent>("Rigidbody Renderer", entity, [](auto& component)
+		{
+			const char* bodyTypeStrings[] = { "Static", "Dynamic", "Kinematic"};
+			const char* currentBodyTypeString = bodyTypeStrings[(int)component.Type];
+			if (ImGui::BeginCombo("Body Tpye", currentBodyTypeString))
+			{
+				for (int i = 0; i < 2; i++)
+				{
+					bool isSelected = currentBodyTypeString == bodyTypeStrings[i];
+					if (ImGui::Selectable(bodyTypeStrings[i], isSelected)) 
+					{
+						currentBodyTypeString = bodyTypeStrings[i];
+						component.Type = (Rigidbody2DComponent::BodyType)i;
+					}
+					if (isSelected)
+						ImGui::SetItemDefaultFocus();
+				}
+
+				ImGui::EndCombo();
+			}
+
+			ImGui::Checkbox("Fixed Rotation", &component.FixedRotation);
+
+		});
+
+		DrawComponent<BoxCollider2DComponent>("Box Collider 2D", entity, [](auto& component)
+		{
+			ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset));
+			ImGui::DragFloat2("Size", glm::value_ptr(component.Size));
+			ImGui::DragFloat("Density", &component.Density, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("RestitutionThreshold", &component.RestitutionThreshold, 0.01f, 0.0f);
+
+		});
+
+		DrawComponent<CircleCollider2DComponent>("Circle Collider 2D", entity, [](auto& component)
+		{
+			ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset));
+			ImGui::DragFloat("Radius", &component.Radius);
+			ImGui::DragFloat("Density", &component.Density, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Restitution Threshold", &component.RestitutionThreshold, 0.01f, 0.0f);
+		});
+	}
 }

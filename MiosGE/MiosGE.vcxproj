@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="Src\MiosGE\Core\MouseCodes.h" />
     <ClInclude Include="Src\MiosGE\Core\Timer.h" />
+    <ClInclude Include="Src\MiosGE\Core\UUID.h" />
     <ClInclude Include="Src\MiosGE\Math\Math.h" />
     <ClInclude Include="Src\MiosGE\Platform\OpenGL\OpenGLUniformBuffer.h" />
     <ClInclude Include="Src\MiosGE\Renderer\Camera.h" />
@@ -364,6 +365,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\MiosGE\Core\OrthographicCameraController.cpp" />
+    <ClCompile Include="Src\MiosGE\Core\UUID.cpp" />
     <ClCompile Include="Src\MiosGE\Math\Math.cpp" />
     <ClCompile Include="Src\MiosGE\Platform\OpenGL\OpenGLFramebuffer.cpp" />
     <ClCompile Include="Src\MiosGE\Platform\OpenGL\OpenGLRendererAPI.cpp" />
@@ -405,6 +407,9 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Box2D\Box2D.vcxproj">
+      <Project>{2a21084a-6751-468a-a2bb-655a6ac03c5e}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\GLAD\GLAD.vcxproj">
       <Project>{2b7e61b5-c6a2-4388-a4b7-bfd3a38c9adc}</Project>
     </ProjectReference>
@@ -665,7 +670,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>YAML_CPP_STATIC_DEFINE;_DEBUG;_CONSOLE;MIOS_WIN64;MIOS_ENABLE_ASSERTS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;$(SolutionDir)MiosGE\Src;$(SolutionDir)MiosGE\vendor\GLFW\include;$(SolutionDir)MiosGE\Src\MiosGE;$(SolutionDir)MiosGE\vendor\GLAD\include;$(SolutionDir)MiosGE\vendor\imgui;$(SolutionDir)MiosGE\vendor\glm;$(SolutionDir)MiosGE\vendor\stb_image;$(SolutionDir)MiosGE\vendor\entt;$(SolutionDir)MiosGE\vendor\yaml-cpp\include;$(SolutionDir)MiosGE\vendor\ImGuizmo;$(VULKAN_SDK)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MiosGE\vendor\spdlog\include;$(SolutionDir)MiosGE\Src;$(SolutionDir)MiosGE\vendor\GLFW\include;$(SolutionDir)MiosGE\Src\MiosGE;$(SolutionDir)MiosGE\vendor\GLAD\include;$(SolutionDir)MiosGE\vendor\imgui;$(SolutionDir)MiosGE\vendor\glm;$(SolutionDir)MiosGE\vendor\stb_image;$(SolutionDir)MiosGE\vendor\entt;$(SolutionDir)MiosGE\vendor\yaml-cpp\include;$(SolutionDir)MiosGE\vendor\ImGuizmo;$(VULKAN_SDK)\Include;$(SolutionDir)MiosGE\vendor\Box2D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>MiosPch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
