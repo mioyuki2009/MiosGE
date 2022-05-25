@@ -29,7 +29,7 @@ namespace miosGE {
 
     private:
         GLFWwindow* m_Windows;
-        GraphicsContext* m_Context;
+        Scope<GraphicsContext> m_Context;
         struct WindowData
         {
             std::string Title;

@@ -11,7 +11,6 @@ namespace miosGE {
 
     static void GLFWErrorCallback(int error_code, const char* description) {
         MIOS_CORE_ERROR("GLFW Error ({0}): {1}", error_code, description);
-    
     }
 
 	Window* Window::Create(const WindowsProps& props) {
@@ -53,7 +52,7 @@ namespace miosGE {
             ++s_GLFWWindowCount;
         }
 
-        m_Context = new OpenGLContext(m_Windows);
+        m_Context = GraphicsContext::Create((void*)m_Windows);
         m_Context->Init();
 
         glfwSetWindowUserPointer(m_Windows, &m_Data);

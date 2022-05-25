@@ -375,6 +375,7 @@
     <ClCompile Include="Src\MiosGE\Platform\Windows\WindowsPlatformUtils.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\EditorCamera.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\Framebuffer.cpp" />
+    <ClCompile Include="Src\MiosGE\Renderer\GraphicsContext.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\RenderCommand.cpp" />
     <ClCompile Include="Src\MiosGE\Renderer\Renderer2D.cpp" />
